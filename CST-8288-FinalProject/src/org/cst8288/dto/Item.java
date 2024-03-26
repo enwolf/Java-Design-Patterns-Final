@@ -4,13 +4,13 @@ import java.util.Date;
 
 public abstract class Item {
 	
-	private int itemID;
-	private String retailerID;
-	private String itemName;
-	private int quantity;
-	private Date expirationDate;
-	private double price;
-	private boolean isSurplus;
+    protected int itemID;
+    protected String retailerID;
+    protected String itemName;
+    protected int quantity;
+    protected Date expirationDate;
+    protected double price;
+    protected boolean isSurplus;
 
 	public Item() 
 	{
