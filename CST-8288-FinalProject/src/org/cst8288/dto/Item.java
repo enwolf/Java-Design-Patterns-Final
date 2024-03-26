@@ -21,112 +21,71 @@ public abstract class Item {
 	/**
 	 * @return the itemID
 	 */
-	public int getItemID() 
-	{
-		return itemID;
-	}
+	public abstract int getItemID();
 
 	
 	/**
 	 * @return the retailerID
 	 */
-	public String getRetailerID() 
-	{
-		return retailerID;
-	}
+	public abstract String getRetailerID();
 
 	/**
 	 * @return the itemName
 	 */
-	public String getItemName() 
-	{
-		return itemName;
-	}
+	public abstract String getItemName();
 
 	/**
 	 * @return the quantity
 	 */
-	public int getQuantity() 
-	{
-		return quantity;
-	}
+	public abstract int getQuantity();
 
 	/**
 	 * @return the expirationDate
 	 */
-	public Date getExpirationDate() 
-	{
-		return expirationDate;
-	}
+	public abstract Date getExpirationDate();
 
 	/**
 	 * @return the price
 	 */
-	public double getPrice() 
-	{
-		return price;
-	}
+	public abstract double getPrice();
 
 	/**
 	 * @return the isSurplus
 	 */
-	public boolean isSurplus() 
-	{
-		return isSurplus;
-	}
+	public abstract boolean isSurplus();
 
 	/**
 	 * @param itemID the itemID to set
 	 */
-	public void setItemID(int itemID) 
-	{
-		this.itemID = itemID;
-	}
+	public abstract void setItemID(int itemID);
 
 	/**
 	 * @param retailerID the retailerID to set
 	 */
-	public void setRetailerID(String retailerID) 
-	{
-		this.retailerID = retailerID;
-	}
+	public abstract void setRetailerID(String retailerID);
 
 	/**
 	 * @param itemName the itemName to set
 	 */
-	public void setItemName(String itemName) 
-	{
-		this.itemName = itemName;
-	}
+	public abstract void setItemName(String itemName);
 
 	/**
 	 * @param quantity the quantity to set
 	 */
-	public void setQuantity(int quantity) 
-	{
-		this.quantity = quantity;
-	}
+	public abstract void setQuantity(int quantity);
 
 	/**
 	 * @param expirationDate the expirationDate to set
 	 */
-	public void setExpirationDate(Date expirationDate) 
-	{
-		this.expirationDate = expirationDate;
-	}
+	public abstract void setExpirationDate(Date expirationDate);
 	/**
 	 * @param price the price to set
 	 */
-	public void setPrice(double price) {
-		this.price = price;
-	}
+	public abstract void setPrice(double price);
 
 	/**
 	 * @param isSurplus the isSurplus to set
 	 */
-	public void setSurplus(boolean isSurplus) 
-	{
-		this.isSurplus = isSurplus;
-	}
+	public abstract void setSurplus(boolean isSurplus);
 	
 }
