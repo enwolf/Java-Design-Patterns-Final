@@ -1,4 +1,4 @@
-package org.cst8288.finalproject.dao;
+package org.cst8288.dto;
 
 import java.util.Date;
 
