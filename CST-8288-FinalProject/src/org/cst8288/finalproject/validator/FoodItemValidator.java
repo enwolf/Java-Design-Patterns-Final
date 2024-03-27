@@ -3,7 +3,7 @@ package org.cst8288.finalproject.validator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import org.cst8288.finalporject.dto.Item;
+import org.cst8288.finalproject.dto.Item;
 
 public class FoodItemValidator 
 {

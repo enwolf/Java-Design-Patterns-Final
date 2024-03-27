@@ -1,4 +1,4 @@
-package org.cst8288.finalporject.dto;
+package org.cst8288.finalproject.dto;
 
 import java.sql.Date;
 

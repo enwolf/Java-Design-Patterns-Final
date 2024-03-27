@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cst8288.finalporject.dto.FoodItem;
-import org.cst8288.finalporject.dto.Item;
 import org.cst8288.finalproject.dataaccess.DataSource;
+import org.cst8288.finalproject.dto.FoodItem;
+import org.cst8288.finalproject.dto.Item;
 
 public class InventoryManagerDAO implements InventoryManagerDAOInterface {
 

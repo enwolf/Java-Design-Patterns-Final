@@ -3,7 +3,7 @@ package org.cst8288.finalproject.dao;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.cst8288.finalporject.dto.Item;
+import org.cst8288.finalproject.dto.Item;
 
 public interface InventoryManagerDAOInterface {
 	
