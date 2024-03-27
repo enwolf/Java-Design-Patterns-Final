@@ -1,8 +1,6 @@
 package org.cst8288.dto;
 
-import java.util.Date;
-
-import org.cst8288.dto.Item;
+import java.sql.Date;
 
 public class FoodItem extends Item
 {
