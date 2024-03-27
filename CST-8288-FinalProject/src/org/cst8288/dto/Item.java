@@ -1,6 +1,6 @@
 package org.cst8288.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 public abstract class Item {
 	
