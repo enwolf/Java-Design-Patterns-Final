@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cst8288.dto.Item;
+import org.cst8288.finalporject.dto.Item;
 import org.cst8288.finalproject.dao.InventoryManagerDAO;
 import org.cst8288.finalproject.validator.FoodItemValidator;
 

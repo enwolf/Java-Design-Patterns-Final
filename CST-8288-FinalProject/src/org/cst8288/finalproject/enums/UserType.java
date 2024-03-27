@@ -1,4 +1,4 @@
-package org.cst8288.enums;
+package org.cst8288.finalproject.enums;
 
 public enum UserType {
 	
