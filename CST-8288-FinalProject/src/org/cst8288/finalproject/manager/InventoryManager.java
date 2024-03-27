@@ -1,5 +1,7 @@
 package org.cst8288.finalproject.manager;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.cst8288.dto.Item;
@@ -10,8 +12,7 @@ public class InventoryManager {
 	
 	private InventoryManagerDAO inventoryDAO;
 	private FoodItemValidator foodItemValidator;
-	private List<Item> inventoryItems;
-		
+			
 	
 	public InventoryManager(InventoryManagerDAO inventoryDAO, FoodItemValidator foodItemValidator ) 
 	{
@@ -21,33 +22,68 @@ public class InventoryManager {
 	
 	public void validateAndAddInventoryItem(Item inventoryItem) 
 	{
-		//TO DO create the logic once you have finished creating the FoodItemValidator class and methods.
+		foodItemValidator.validateFoodItem(inventoryItem);
 	}
 	
 	public void addInventoryItem(Item inventoryItem) 
 	{
-		inventoryDAO.addInventoryItem(inventoryItem);
+		try 
+		{
+			inventoryDAO.addInventoryItem(inventoryItem);
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void removeInventoryItem(int itemID) 
 	{
-		inventoryDAO.removeInventoryitem(itemID);		
+		try 
+		{
+			inventoryDAO.removeInventoryitem(itemID);
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}		
 	}
 	
 	public void getInventoryItem(int itemID) 
 	{
-		inventoryDAO.getSingleInventoryItemByID(itemID);
+		try 
+		{
+			inventoryDAO.getSingleInventoryItemByID(itemID);
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public List<Item> getAllInventoryItems()
 	{
-		return inventoryDAO.getALLInventoryItems();		
+		try 
+		{
+			return inventoryDAO.getALLInventoryItems();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			return new ArrayList<>();			
+		}		
 	}
 	
 	public List<Item> getAllSurplusnventoryItems()
 	{
-		return inventoryDAO.getALLSurplusInventoryItems();
+		try 
+		{
+			return inventoryDAO.getALLSurplusInventoryItems();
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			return new ArrayList<>();			
+		}
 	}
-	
-
 }
