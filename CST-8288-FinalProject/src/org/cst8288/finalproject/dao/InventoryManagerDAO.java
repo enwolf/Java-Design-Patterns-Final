@@ -17,33 +17,30 @@ import org.cst8288.finalproject.dataaccess.DataSource;
 public class InventoryManagerDAO implements InventoryManagerDAOInterface{
 
 	@Override
-	public void addInventoryItem(Item inventoryItem) 
-	{
-		int rowsAffected = 0;
-		String insertSqlQuery = "INSERT INTO inventory (itemID, retailerID, itemName, quantity, expirationDate, price, isSurplus) "
-				+ "              VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(insertSqlQuery)) 
-        {
-            preparedStatement.setInt(1, inventoryItem.getItemID());
-            preparedStatement.setString(2, inventoryItem.getRetailerID().trim());
-            preparedStatement.setString(3, inventoryItem.getItemName().trim());
-            preparedStatement.setInt(4, inventoryItem.getQuantity());
-            preparedStatement.setDate(5, (Date) inventoryItem.getExpirationDate());
-            preparedStatement.setDouble(6,  inventoryItem.getPrice());
-            preparedStatement.setBoolean(7,  inventoryItem.isSurplus());
-            
-            rowsAffected = preparedStatement.executeUpdate();
-        }
-        catch (SQLIntegrityConstraintViolationException e) 
-        {
-        	e.printStackTrace();
-        }
-        catch (SQLException e) 
-        {
-            e.printStackTrace();
-        }
-		
+	public void addInventoryItem(Item inventoryItem) {
+	    int rowsAffected = 0;
+	    String insertSqlQuery = "INSERT INTO inventory (retailerID, itemName, quantity, expirationDate, price, isSurplus) "
+	            + "VALUES (?, ?, ?, ?, ?, ?)";
+	    try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+	         PreparedStatement preparedStatement = dbConnection.prepareStatement(insertSqlQuery)) 
+	    {
+	        preparedStatement.setString(1, inventoryItem.getRetailerID().trim());
+	        preparedStatement.setString(2, inventoryItem.getItemName().trim());
+	        preparedStatement.setInt(3, inventoryItem.getQuantity());
+	        preparedStatement.setDate(4, new java.sql.Date(inventoryItem.getExpirationDate().getTime()));
+	        preparedStatement.setDouble(5, inventoryItem.getPrice());
+	        preparedStatement.setBoolean(6, inventoryItem.isSurplus());
+	        
+	        rowsAffected = preparedStatement.executeUpdate();
+	    }
+	    catch (SQLIntegrityConstraintViolationException e) 
+	    {
+	        e.printStackTrace();
+	    }
+	    catch (SQLException e) 
+	    {
+	        e.printStackTrace();
+	    }
 	}
 
 	@Override
