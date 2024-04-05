@@ -22,7 +22,17 @@ public class InventoryManager {
 	
 	public void validateAndAddInventoryItem(Item inventoryItem) 
 	{
-		foodItemValidator.validateFoodItem(inventoryItem);
+		if(foodItemValidator.validateFoodItem(inventoryItem)) 
+		{
+			try 
+			{
+				inventoryDAO.addInventoryItem(inventoryItem);
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void addInventoryItem(Item inventoryItem) 
