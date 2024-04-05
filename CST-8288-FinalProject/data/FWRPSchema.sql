@@ -26,6 +26,7 @@ CREATE TABLE consumer (
     City VARCHAR(100) NOT NULL,
     Province VARCHAR(100) NOT NULL,
     PostalCode VARCHAR(20) NOT NULL,
+    AccountBalance DECIMAL(10, 2) DEFAULT 0.00,
     FOREIGN KEY (UserID) REFERENCES user(UserID)
 );
 
