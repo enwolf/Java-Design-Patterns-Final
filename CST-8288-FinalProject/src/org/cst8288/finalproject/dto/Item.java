@@ -1,5 +1,6 @@
 package org.cst8288.finalproject.dto;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public abstract class Item {
@@ -10,6 +11,8 @@ public abstract class Item {
     protected int quantity;
     protected Date expirationDate;
     protected double price;
+    protected BigDecimal discountRate;
+    protected BigDecimal discountAmount;
     protected boolean isSurplus;
 
 	public Item() 
@@ -17,13 +20,11 @@ public abstract class Item {
 		
 	}
 	
-	
 	/**
 	 * @return the itemID
 	 */
 	public abstract int getItemID();
 
-	
 	/**
 	 * @return the retailerID
 	 */
@@ -48,6 +49,16 @@ public abstract class Item {
 	 * @return the price
 	 */
 	public abstract double getPrice();
+	
+	/**
+	 * @return the getDiscountRate
+	 */
+	public abstract BigDecimal getDiscountRate();
+	
+	/**
+	 * @return the getDiscountAmount
+	 */
+	public abstract BigDecimal getDiscountAmount();
 
 	/**
 	 * @return the isSurplus
@@ -78,10 +89,21 @@ public abstract class Item {
 	 * @param expirationDate the expirationDate to set
 	 */
 	public abstract void setExpirationDate(Date expirationDate);
+	
 	/**
 	 * @param price the price to set
 	 */
 	public abstract void setPrice(double price);
+	
+	/**
+	 * @param price the setDiscountRate to set
+	 */
+	public abstract void setDiscountRate(BigDecimal discountRate);
+	
+	/**
+	 * @param price the setDiscountAmount to set
+	 */
+	public abstract void setDiscountAmount(BigDecimal discountAmount);
 
 	/**
 	 * @param isSurplus the isSurplus to set
