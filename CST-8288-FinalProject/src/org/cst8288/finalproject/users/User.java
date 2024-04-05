@@ -1,5 +1,5 @@
 package org.cst8288.finalproject.users;
 
-public class User {
+public abstract class User {
 
 }
