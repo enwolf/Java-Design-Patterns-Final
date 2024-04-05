@@ -60,6 +60,9 @@ CREATE TABLE inventory (
     ItemName VARCHAR(255) NOT NULL,
     Quantity INT NOT NULL,
     ExpirationDate DATE NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    DiscountRate DECIMAL(6, 2) DEFAULT 0.00,
+    DiscountAmount DECIMAL(10, 2) DEFAULT 0.00,
     FOREIGN KEY (RetailerID) REFERENCES Retailer(RetailerID)
 );
 
@@ -68,7 +71,8 @@ CREATE TABLE surplusFood (
     SurplusFoodID INT AUTO_INCREMENT PRIMARY KEY,
     InventoryID INT NOT NULL,
     Status ENUM('Available', 'Claimed', 'Sold') NOT NULL,
-    DiscountRate DECIMAL(6, 2) NOT NULL, 
+    DiscountRate DECIMAL(6, 2) DEFAULT 0.00,
+    DiscountAmount DECIMAL(10, 2) DEFAULT 0.00,
     FOREIGN KEY (InventoryID) REFERENCES inventory(InventoryID)
 );
 
