@@ -1,5 +1,6 @@
 package org.cst8288.finalproject.dto;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class FoodItem extends Item
@@ -46,6 +47,20 @@ public class FoodItem extends Item
     {
         return super.price;
     }
+    
+	@Override
+	public BigDecimal getDiscountRate() 
+	{
+	 
+		return super.discountRate;
+	}
+
+	@Override
+	public BigDecimal getDiscountAmount() 
+	{
+	
+		return super.discountAmount;
+	}
 
     @Override
     public boolean isSurplus() 
@@ -88,6 +103,19 @@ public class FoodItem extends Item
     {
         super.price = price;
     }
+    
+	@Override
+	public void setDiscountRate(BigDecimal discountRate) 
+	{
+		super.discountRate = discountRate;
+	}
+
+	@Override
+	public void setDiscountAmount(BigDecimal discountAmount) 
+	{
+		super.discountAmount = discountAmount;
+			
+	}
 
     @Override
     public void setSurplus(boolean isSurplus) 
