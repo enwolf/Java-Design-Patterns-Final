@@ -1,0 +1,170 @@
+package org.cst8288.finalproject.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Properties;
+
+import org.cst8288.finalproject.dataaccess.DataSource;
+import org.cst8288.finalproject.enums.ContactMethod;
+import org.cst8288.finalproject.interfaces.SubscriberDAOInterface;
+import org.cst8288.finalproject.subscriptions.Subscriber;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+public class SubscriberDAO implements SubscriberDAOInterface{
+	private int subID;
+	private ContactMethod contactMethod;
+	private String contactInfo;
+	
+	private Subscriber subscriber;
+	
+	DataSource instance = DataSource.getInstance(); //datasource
+	
+	//Email config for javamail
+    private String host = "smtp.gmail.com";
+    private int port = 587;
+    private String username = "algonquinfwrp@example.com";
+    private String password = "AlgonquinDP@";
+    private String recipent;
+    
+    private String subject;
+    private String body;
+    
+    //JavaMail properties
+    Properties properties = new Properties();
+    //properties.put("mail.smtp.host", host);
+    //properties.put("mail.smtp.port", port);
+    //properties.put("mail.smtp.auth", "true");
+    //properties.put("mail.smtp.starttls.enable", "true");
+	
+	@Override
+	public void createSubscriber(Subscriber subscriber) {
+		try (Connection connection = instance.getConnectionToDatabase()) {
+            if (connection != null) {
+                System.out.println("Database connection established successfully.");
+
+                //Insert data into a table
+                String insertQuery = "INSERT INTO subscription (UserID, ContactMethod, ContactInfoformation) VALUES (?, ?, ?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                    preparedStatement.setInt(1, subscriber.getId());
+                    preparedStatement.setString(2, subscriber.getMethod().name());//using .name() to convert the ENUM to a string to insert into mySQL using JDBC
+                    preparedStatement.setString(3, subscriber.getInfo());
+                    int rowsInserted = preparedStatement.executeUpdate();
+                    System.out.println(rowsInserted + " row inserted.");
+                } catch (SQLException e) {
+                    System.err.println("Error executing insert query: " + e.getMessage());
+                }
+            } else {
+                System.err.println("Failed to establish database connection.");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        }
+	}
+
+	@Override
+	public Subscriber retrieveSubscriber(int subscriberID) {
+		Subscriber subcriberRetrieved = null;
+		
+		try (Connection connection = instance.getConnectionToDatabase()) {
+            if (connection != null) {
+                System.out.println("Database connection established successfully.");
+
+                //Insert data into a table
+                String insertQuery = "SELECT * FROM subscribtion WHERE UserID = ?";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {             	
+                    preparedStatement.setInt(1, subscriberID);
+                    
+                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                        while (resultSet.next()) {
+                        	subcriberRetrieved.setId(resultSet.getInt("id"));
+                            ContactMethod contactMethod = ContactMethod.valueOf(resultSet.getString("ContactMethod"));
+                            subcriberRetrieved.setMethod(contactMethod);
+                            subcriberRetrieved.setInfo(resultSet.getString("status"));
+                        }
+                    } catch (SQLException e) {
+                        System.err.println("Error executing inner query: " + e.getMessage());
+                    }
+                } catch (SQLException e) {
+                    System.err.println("Error executing insert query: " + e.getMessage());
+                }
+            } else {
+                System.err.println("Failed to establish database connection.");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        }
+		return subcriberRetrieved;
+	}
+
+	@Override
+	public void updateSubscriber(Subscriber subscriber) {
+		subscriber.setId(subID);
+		subscriber.setMethod(contactMethod);
+		subscriber.setInfo(contactInfo);
+	}
+
+	@Override
+	public void deleteSubscriber(int subscriberID) {
+		try (Connection connection = instance.getConnectionToDatabase()) {
+            if (connection != null) {
+                System.out.println("Database connection established successfully.");
+
+                // Remove data from a table
+                String deleteQuery = "DELETE FROM subscription WHERE UserID = ?";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+                    preparedStatement.setInt(1, subscriberID);
+                    int rowsAffected = preparedStatement.executeUpdate();
+                    System.out.println(rowsAffected + " row deleted.");
+                } catch (SQLException e) {
+                    System.err.println("Error executing insert query: " + e.getMessage());
+                }
+            } else {
+                System.err.println("Failed to establish database connection.");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        }
+	}
+
+	@Override
+	public List<Subscriber> listSubscribers() {
+		Subscriber subcriberRetrieved = null;
+		List<Subscriber> list = null;
+		
+		try (Connection connection = instance.getConnectionToDatabase()) {
+            if (connection != null) {
+                System.out.println("Database connection established successfully.");
+
+                //Insert data into a table
+                String insertQuery = "SELECT * FROM subscribtion";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                        while (resultSet.next()) {
+                        	subcriberRetrieved.setId(resultSet.getInt("id"));
+                            ContactMethod contactMethod = ContactMethod.valueOf(resultSet.getString("ContactMethod"));
+                            subcriberRetrieved.setMethod(contactMethod);
+                            subcriberRetrieved.setInfo(resultSet.getString("status"));
+                            list.add(subcriberRetrieved);
+                        }
+                    } catch (SQLException e) {
+                        System.err.println("Error executing inner query: " + e.getMessage());
+                    }
+                } catch (SQLException e) {
+                    System.err.println("Error executing insert query: " + e.getMessage());
+                }
+            } else {
+                System.err.println("Failed to establish database connection.");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        }
+		return list;
+	}
+
+}
