@@ -25,23 +25,6 @@ public class SubscriberDAO implements SubscriberDAOInterface{
 	
 	DataSource instance = DataSource.getInstance(); //datasource
 	
-	//Email config for javamail
-    private String host = "smtp.gmail.com";
-    private int port = 587;
-    private String username = "algonquinfwrp@example.com";
-    private String password = "AlgonquinDP@";
-    private String recipent;
-    
-    private String subject;
-    private String body;
-    
-    //JavaMail properties
-    Properties properties = new Properties();
-    //properties.put("mail.smtp.host", host);
-    //properties.put("mail.smtp.port", port);
-    //properties.put("mail.smtp.auth", "true");
-    //properties.put("mail.smtp.starttls.enable", "true");
-	
 	@Override
 	public void createSubscriber(Subscriber subscriber) {
 		try (Connection connection = instance.getConnectionToDatabase()) {
