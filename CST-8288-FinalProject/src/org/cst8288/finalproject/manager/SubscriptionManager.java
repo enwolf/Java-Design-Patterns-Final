@@ -7,12 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 import java.util.Properties;
+import java.util.Hashtable;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-
 
 import org.cst8288.finalproject.subscriptions.Alert;
 import org.cst8288.finalproject.subscriptions.Subscriber;
@@ -39,24 +38,6 @@ public class SubscriptionManager extends SubscriberDAO{
     
     private String subject;
     private String body;
-    
-    //JavaMail properties
-    Properties properties = new Properties();
-    properties.put("mail.smtp.host", host);
-    //properties.put("mail.smtp.port", port);
-    //properties.put("mail.smtp.auth", "true");
-    //properties.put("mail.smtp.starttls.enable", "true");
-    
-    // authenticator for sending the email
-    Authenticator authenticator = new Authenticator() {
-    	@Override
-    	protected PasswordAuthentication getPasswordAuthentication() {
-    		return new PasswordAuthentication(username, password);
-    	}
-    };
-    
-    // session with authenticator's properties
-    Session emailSession = Session.getInstance(properties, authenticator);
 			
 	public SubscriptionManager(SubscriberDAO subscriberDAO) {
 		
@@ -87,6 +68,24 @@ public class SubscriptionManager extends SubscriberDAO{
 	}
 	
 	public void sendAlertToSubscriber(Subscriber subscriber, Alert alert) {
+	    //JavaMail properties
+	    Properties mailProperties = new Properties();
+	    mailProperties.put("mail.smtp.host", host);
+	    mailProperties.put("mail.smtp.port", port);
+	    mailProperties.put("mail.smtp.auth", "true");
+	    mailProperties.put("mail.smtp.starttls.enable", "true");
+	    
+	    // authenticator for sending the email
+	    Authenticator authenticator = new Authenticator() {
+	    	@Override
+	    	protected PasswordAuthentication getPasswordAuthentication() {
+	    		return new PasswordAuthentication(username, password);
+	    	}
+	    };
+	    
+	    // session with authenticator's properties
+	    Session emailSession = Session.getInstance(mailProperties, authenticator);
+		
 		ContactMethod method = subscriber.getMethod();
 		
 		switch(method) {
