@@ -42,7 +42,7 @@ public class SubscriptionManager extends SubscriberDAO{
     
     //JavaMail properties
     Properties properties = new Properties();
-    //properties.put("mail.smtp.host", host);
+    properties.put("mail.smtp.host", host);
     //properties.put("mail.smtp.port", port);
     //properties.put("mail.smtp.auth", "true");
     //properties.put("mail.smtp.starttls.enable", "true");
@@ -75,9 +75,7 @@ public class SubscriptionManager extends SubscriberDAO{
 	}
 
 	public void updateSubsContactInfo(int subID, ContactMethod contactMethod, String contactInfo) {
-		subscriber.setId(subID);
-		subscriber.setMethod(contactMethod);
-		subscriber.setInfo(contactInfo);
+		updateSubscriber(subID, contactMethod, contactInfo);
 	}
 	
 	public Subscriber getSubDetails(){

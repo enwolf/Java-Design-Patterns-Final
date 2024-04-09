@@ -86,10 +86,29 @@ public class SubscriberDAO implements SubscriberDAOInterface{
 	}
 
 	@Override
-	public void updateSubscriber(Subscriber subscriber) {
-		subscriber.setId(subID);
-		subscriber.setMethod(contactMethod);
-		subscriber.setInfo(contactInfo);
+	public void updateSubscriber(int subID, ContactMethod contactMethod, String contactInfo) {
+		Subscriber subcriberRetrieved = null;
+		
+		try (Connection connection = instance.getConnectionToDatabase()) {
+            if (connection != null) {
+                System.out.println("Database connection established successfully.");
+
+                //Insert data into a table
+                String insertQuery = "UPDATE subscribtion SET ContactMethod = ?, ContactInfoformation = ? WHERE UserID = ?";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {             	
+                    preparedStatement.setString(1, contactMethod.name());
+                    preparedStatement.setString(2, contactInfo);
+                    preparedStatement.setInt(3, subID);
+                   
+                } catch (SQLException e) {
+                    System.err.println("Error executing insert query: " + e.getMessage());
+                }
+            } else {
+                System.err.println("Failed to establish database connection.");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        }
 	}
 
 	@Override
