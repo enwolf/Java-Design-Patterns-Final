@@ -68,7 +68,7 @@ public class SubscriberDAO implements SubscriberDAOInterface{
                         	subcriberRetrieved.setId(resultSet.getInt("id"));
                             ContactMethod contactMethod = ContactMethod.valueOf(resultSet.getString("ContactMethod"));
                             subcriberRetrieved.setMethod(contactMethod);
-                            subcriberRetrieved.setInfo(resultSet.getString("status"));
+                            subcriberRetrieved.setInfo(resultSet.getString("ContactInfoformation"));
                         }
                     } catch (SQLException e) {
                         System.err.println("Error executing inner query: " + e.getMessage());
