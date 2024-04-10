@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -32,7 +33,7 @@ public class SubscriberDAO implements SubscriberDAOInterface{
                 System.out.println("Database connection established successfully.");
 
                 //Insert data into a table
-                String insertQuery = "INSERT INTO subscription (UserID, ContactMethod, ContactInfoformation) VALUES (?, ?, ?)";
+                String insertQuery = "INSERT INTO subscription (UserID, ContactMethod, ContactInformation) VALUES (?, ?, ?)";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                     preparedStatement.setInt(1, subscriber.getId());
                     preparedStatement.setString(2, subscriber.getMethod().name());//using .name() to convert the ENUM to a string to insert into mySQL using JDBC
@@ -52,23 +53,23 @@ public class SubscriberDAO implements SubscriberDAOInterface{
 
 	@Override
 	public Subscriber retrieveSubscriber(int subscriberID) {
-		Subscriber subcriberRetrieved = null;
+		Subscriber subcriberRetrieved = new Subscriber();
 		
 		try (Connection connection = instance.getConnectionToDatabase()) {
             if (connection != null) {
                 System.out.println("Database connection established successfully.");
 
                 //Insert data into a table
-                String insertQuery = "SELECT * FROM subscribtion WHERE UserID = ?";
+                String insertQuery = "SELECT * FROM subscription WHERE UserID = ?";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {             	
                     preparedStatement.setInt(1, subscriberID);
                     
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         while (resultSet.next()) {
-                        	subcriberRetrieved.setId(resultSet.getInt("id"));
-                            ContactMethod contactMethod = ContactMethod.valueOf(resultSet.getString("ContactMethod"));
+                        	subcriberRetrieved.setId(subscriberID);
+                            ContactMethod contactMethod = ContactMethod.valueOf(resultSet.getString("ContactMethod").toUpperCase());
                             subcriberRetrieved.setMethod(contactMethod);
-                            subcriberRetrieved.setInfo(resultSet.getString("ContactInfoformation"));
+                            subcriberRetrieved.setInfo(resultSet.getString("ContactInformation"));
                         }
                     } catch (SQLException e) {
                         System.err.println("Error executing inner query: " + e.getMessage());
@@ -86,20 +87,19 @@ public class SubscriberDAO implements SubscriberDAOInterface{
 	}
 
 	@Override
-	public void updateSubscriber(int subID, ContactMethod contactMethod, String contactInfo) {
-		Subscriber subcriberRetrieved = null;
-		
+	public void updateSubscriber(int subID, ContactMethod contactMethod, String contactInfo) {		
 		try (Connection connection = instance.getConnectionToDatabase()) {
             if (connection != null) {
                 System.out.println("Database connection established successfully.");
 
                 //Insert data into a table
-                String insertQuery = "UPDATE subscribtion SET ContactMethod = ?, ContactInfoformation = ? WHERE UserID = ?";
+                String insertQuery = "UPDATE subscription SET ContactMethod = ?, ContactInformation = ? WHERE UserID = ?";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {             	
                     preparedStatement.setString(1, contactMethod.name());
                     preparedStatement.setString(2, contactInfo);
                     preparedStatement.setInt(3, subID);
-                   
+                    int rowsInserted = preparedStatement.executeUpdate();
+                    System.out.println(rowsInserted + " row edited.");
                 } catch (SQLException e) {
                     System.err.println("Error executing insert query: " + e.getMessage());
                 }
@@ -136,22 +136,22 @@ public class SubscriberDAO implements SubscriberDAOInterface{
 
 	@Override
 	public List<Subscriber> listSubscribers() {
-		Subscriber subcriberRetrieved = null;
-		List<Subscriber> list = null;
+		Subscriber subcriberRetrieved = new Subscriber();
+		List<Subscriber> list = new ArrayList();
 		
 		try (Connection connection = instance.getConnectionToDatabase()) {
             if (connection != null) {
                 System.out.println("Database connection established successfully.");
 
                 //Insert data into a table
-                String insertQuery = "SELECT * FROM subscribtion";
+                String insertQuery = "SELECT * FROM subscription";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         while (resultSet.next()) {
-                        	subcriberRetrieved.setId(resultSet.getInt("id"));
-                            ContactMethod contactMethod = ContactMethod.valueOf(resultSet.getString("ContactMethod"));
+                        	subcriberRetrieved.setId(resultSet.getInt("UserId"));
+                            ContactMethod contactMethod = ContactMethod.valueOf(resultSet.getString("ContactMethod").toUpperCase());
                             subcriberRetrieved.setMethod(contactMethod);
-                            subcriberRetrieved.setInfo(resultSet.getString("status"));
+                            subcriberRetrieved.setInfo(resultSet.getString("ContactInformation"));
                             list.add(subcriberRetrieved);
                         }
                     } catch (SQLException e) {

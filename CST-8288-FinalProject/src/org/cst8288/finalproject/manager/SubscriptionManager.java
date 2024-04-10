@@ -51,7 +51,7 @@ public class SubscriptionManager extends SubscriberDAO{
         deleteSubscriber(subscriberID);
 	}
 	
-	public List<Subscriber> listSubscribers(){
+	public List<Subscriber> listSubs(){
 		return listSubscribers();
 	}
 
@@ -59,8 +59,8 @@ public class SubscriptionManager extends SubscriberDAO{
 		updateSubscriber(subID, contactMethod, contactInfo);
 	}
 	
-	public Subscriber getSubDetails(){
-		return subscriber;
+	public Subscriber getSubDetails(int subId){
+		return retrieveSubscriber(subId);
 	}
 	
 	public void notifySub(Alert alert) {
