@@ -16,10 +16,11 @@ class AlertsTest {
 	SubscriptionManager sm = new SubscriptionManager(dao);
 	
 	@Test
-	void test() {
+	void testSendEmail() {
 		subscriber.setId(1);
 		subscriber.setMethod(ContactMethod.EMAIL);
 		subscriber.setInfo("kroo0008@algonquinlive.com");
+		
 		
 		alert.setAlertMessage("This is a test alert");
 		
@@ -27,6 +28,20 @@ class AlertsTest {
 		sm.sendAlertToSubscriber(subscriber, alert);
 		}catch(Exception e){
 		    System.err.println("Error sending alert to subscriber: " + e.getMessage());
+		    e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testAddSubscriber() {
+		subscriber.setId(1);
+		subscriber.setMethod(ContactMethod.EMAIL);
+		subscriber.setInfo("kroo0008@algonquinlive.com");
+		
+		try {
+		sm.subscribe(subscriber);
+		}catch(Exception e){
+		    System.err.println("Error adding subscribing: " + e.getMessage());
 		    e.printStackTrace();
 		}
 	}
