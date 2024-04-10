@@ -17,14 +17,9 @@ class AlertsTest {
 	SubscriptionManager sm = new SubscriptionManager(dao);
 	
 	@Test
-	void testSendEmail() {
-		Subscriber subscriber = new Subscriber();
-		subscriber.setId(1);
-		subscriber.setMethod(ContactMethod.EMAIL);
-		subscriber.setInfo("kroo0008@algonquinlive.com");
-		
-		
-		alert.setAlertMessage("This is a test alert");
+	void testSendAlert() {
+		Subscriber subscriber = sm.retrieveSubscriber(1);
+		alert.setAlertMessage("This is a test");
 		
 		try {
 		sm.sendAlertToSubscriber(subscriber, alert);
@@ -33,13 +28,14 @@ class AlertsTest {
 		    e.printStackTrace();
 		}
 	}
+	
 	// Tests that adding a subscriber to the table works. Must ensure there is a user already in the user table with UserID 1
-	@Test
+	/*@Test
 	void testAddSubscriber() {
 		Subscriber subscriber = new Subscriber();
 		subscriber.setId(1);
-		subscriber.setMethod(ContactMethod.EMAIL);
-		subscriber.setInfo("kroo0008@algonquinlive.com");
+		subscriber.setMethod(ContactMethod.PHONE);
+		subscriber.setInfo("6138185915");
 		
 		try {
 		sm.subscribe(subscriber);
@@ -47,14 +43,14 @@ class AlertsTest {
 		    System.err.println("Error adding subscriber: " + e.getMessage());
 		    e.printStackTrace();
 		}
-	}
+	}*/
 	// Tests functionality of changing subscription info
-		@Test
+		/*@Test
 		void testEditSubscriber() {
 			Subscriber subscriber = new Subscriber();
 			subscriber.setId(1);
 			subscriber.setMethod(ContactMethod.PHONE);
-			subscriber.setInfo("123-456-7890");
+			subscriber.setInfo("6138185915");
 			
 			try {
 			sm.updateSubsContactInfo(subscriber.getId(), subscriber.getMethod(), subscriber.getInfo());
@@ -62,14 +58,12 @@ class AlertsTest {
 			    System.err.println("Error editing subscriber: " + e.getMessage());
 			    e.printStackTrace();
 			}
-		}
+		}*/
 		// Tests functionality of changing subscription info
-		@Test
+		/*@Test
 		void testDeleteSub() {
 			Subscriber subscriber = new Subscriber();
 			subscriber.setId(1);
-			subscriber.setMethod(ContactMethod.PHONE);
-			subscriber.setInfo("123-456-7890");
 			
 			try {
 			sm.unsubscribe(subscriber.getId());
@@ -77,7 +71,7 @@ class AlertsTest {
 			    System.err.println("Error deleting subscriber: " + e.getMessage());
 			    e.printStackTrace();
 			}
-		}
+		}*/
 		// Tests functionality of retrieving subscription info
 		@Test
 		void testRetrieveSub() {

@@ -1,17 +1,19 @@
 package org.cst8288.finalproject.manager;
 
-import java.nio.channels.Channel;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 import java.util.Properties;
-import java.util.Hashtable;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 
 import org.cst8288.finalproject.subscriptions.Alert;
 import org.cst8288.finalproject.subscriptions.Subscriber;
@@ -23,21 +25,24 @@ public class SubscriptionManager extends SubscriberDAO{
 	private List<Subscriber> subscribers;
 	private Alert alertMessage;
 	
-	private Subscriber subscriber;
-	
 	// observer pattern requirements 
 	private List<Observer> observers = new ArrayList<>();
-	private int state;
+	private int threshold;
+	private int databaseValue;
 	
 	//Email config for javamail
     private String host = "smtp.gmail.com";
     private int port = 587;
-    private String username = "algonquinfwrp@example.com";
-    private String password = "AlgonquinDP@";
+    private String username = "algonquinfwrp@gmail.com";
+    private String password = "ujfurdzynscpgndi";
     private String recipent;
     
     private String subject;
     private String body;
+    
+    // Config for sms using Twilio
+    public static final String ACCOUNT_SID = "ACdcac2e2eb8856fcda97bddcfa5adb047";
+    public static final String AUTH_TOKEN = "3850c2c34dd7f057a51aa4546d4e5787";
 			
 	public SubscriptionManager(SubscriberDAO subscriberDAO) {
 		
@@ -63,8 +68,11 @@ public class SubscriptionManager extends SubscriberDAO{
 		return retrieveSubscriber(subId);
 	}
 	
-	public void notifySub(Alert alert) {
-		
+	public void notifySubs(Alert alert) {
+		subscribers = listSubs();
+		for(Subscriber sub : subscribers) {
+			sendAlertToSubscriber(sub, alert);
+		}
 	}
 	
 	public void sendAlertToSubscriber(Subscriber subscriber, Alert alert) {
@@ -96,7 +104,7 @@ public class SubscriptionManager extends SubscriberDAO{
 
 		            // Set the sender, recipient, subject, and body of the email
 		            message.setFrom(new InternetAddress(username));
-		            message.addRecipient(Message.RecipientType.TO, new InternetAddress(subscriber.getInfo()));
+		            message.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(subscriber.getInfo()));
 		            
 		            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		            message.setSubject("Alert " + LocalDate.now().format(formatter));
@@ -111,31 +119,16 @@ public class SubscriptionManager extends SubscriberDAO{
 		        }
 				break;
 			case PHONE:
-				System.out.println("not implemented/still looking for a method to send alerts through phone (probably Twilio)");
+				Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+				
+			    Message message = Message.creator(
+			    		new PhoneNumber("+1" + subscriber.getInfo()), 
+			    		new PhoneNumber("+12055486482"), 
+			    		alert.getAlertMessage())
+			    		.create();
+
+			    System.out.println(message.getSid());
 				break;
 		}
 	}
-	
-	// Observer Pattern getters and setters
-	public int getState() {
-		return state;
-	}
-	public void setState(int state) {
-		this.state = state;
-		//notifyObservers();
-	}
-	// Observer add/remove methods as well as notify
-	public void addObserver(Observer observer) {
-		observers.add(observer);
-	}
-	
-	public void removeObserver(Observer observer) {
-		observers.remove(observer);
-	}
-	
-	/*public void notifyObservers() {
-		for (Observer observer : observers) {
-			observer.update();
-		}
-	}*/
 }

@@ -168,5 +168,6 @@ public class SubscriberDAO implements SubscriberDAOInterface{
         }
 		return list;
 	}
+	//Observer for sending newsletter
 
 }
