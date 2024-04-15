@@ -5,13 +5,13 @@ import org.cst8288.finalproject.interfaces.UserInterface;
 
 public class Consumer implements UserInterface{
 
- 	private int consumerID;
+    private int consumerID;
+    private int userID;
     private String phoneNumber;
     private String streetAddress;
     private String city;
     private String province;
-    private String postalCode;
-	
+    private String postalCode;	
     
 	public int getConsumerID() {
 		return consumerID;
@@ -120,7 +120,4 @@ public class Consumer implements UserInterface{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
-
 }

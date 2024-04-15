@@ -101,8 +101,8 @@ CREATE TABLE claim (
 -- Create Subscription Table
 CREATE TABLE subscription (
     SubscriptionID INT AUTO_INCREMENT PRIMARY KEY,
-    UserID INT NOT NULL,
+    UserID INT UNIQUE NOT NULL,
     ContactMethod ENUM('Email', 'Phone') NOT NULL,
-    ContactInfoformation VARCHAR(255) NOT NULL,
+    ContactInformation VARCHAR(255) NOT NULL,
     FOREIGN KEY (UserID) REFERENCES user(UserID)
 );
