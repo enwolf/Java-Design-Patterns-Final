@@ -1,140 +1,135 @@
 package org.cst8288.finalproject.users;
 
 import org.cst8288.finalproject.enums.UserType;
-import org.cst8288.finalproject.interfaces.UserInterface;
 
-public class CharitableOrganization implements UserInterface{
+public class CharitableOrganization extends AbstractUser {
 
-	 private int organizationID;
-	    private int userID;
+    private int organizationID;
+    private String organizationName;
+    private String city;
+    private String province;
+    private String postalCode;
+    private String country;
 
-	    private String organizationName;
+    // Getters
+        @Override
+    public int getUserId() 
+    {
+        return super.userID; 
+    }
 
-	    private String city;
+    @Override
+    public String getUserFirstName() 
+    {
+        return super.userFirstName; 
+    }
 
-	    private String province;
+    @Override
+    public String getUserLastName() 
+    {
+        return super.userLastName;  
+    }
 
-	    private String postalCode;
+    @Override
+    public String getEmailAddress() 
+    {
+        return super.emailAddress;  
+    }
 
-	    private String country;
-	    
-	    
-	public int getOrganizationID() {
-			return organizationID;
-		}
+    @Override
+    public UserType getUserType() 
+    {
+        return super.userType;  
+    }
+    
+    public int getOrganizationID() 
+    {
+        return organizationID;
+    }
 
-		public void setOrganizationID(int organizationID) {
-			this.organizationID = organizationID;
-		}
+    public String getOrganizationName() 
+    {
+        return organizationName;
+    }
 
-		public int getUserID() {
-			return userID;
-		}
+    public String getCity() 
+    {
+        return city;
+    }
 
-		public void setUserID(int userID) {
-			this.userID = userID;
-		}
+    public String getProvince() 
+    {
+        return province;
+    }
 
-		public String getOrganizationName() {
-			return organizationName;
-		}
+    public String getPostalCode() 
+    {
+        return postalCode;
+    }
 
-		public void setOrganizationName(String organizationName) {
-			this.organizationName = organizationName;
-		}
+    public String getCountry() 
+    {
+        return country;
+    }
 
-		public String getCity() {
-			return city;
-		}
+    // Setters
+    @Override
+    public void setUserId(int userId) 
+    {
+        super.userID = userId;  
+    }
 
-		public void setCity(String city) {
-			this.city = city;
-		}
+    @Override
+    public void setUserFirstName(String userFirstName) 
+    {
+        super.userFirstName = userFirstName; 
+    }
 
-		public String getProvince() {
-			return province;
-		}
+    @Override
+    public void setUserLastName(String userLastName) 
+    {
+        super.userLastName = userLastName;  
+    }
 
-		public void setProvince(String province) {
-			this.province = province;
-		}
+    @Override
+    public void setEmailAddress(String emailAddress) 
+    {
+        super.emailAddress = emailAddress;  
+    }
 
-		public String getPostalCode() {
-			return postalCode;
-		}
+    @Override
+    public void setUserType(UserType userType) 
+    {
+        super.userType = userType;  
+    }
+    public void setOrganizationID(int organizationID) 
+    {
+        this.organizationID = organizationID;
+    }
 
-		public void setPostalCode(String postalCode) {
-			this.postalCode = postalCode;
-		}
+    public void setOrganizationName(String organizationName) 
+    {
+        this.organizationName = organizationName;
+    }
 
-		public String getCountry() {
-			return country;
-		}
+    public void setCity(String city) 
+    {
+        this.city = city;
+    }
 
-		public void setCountry(String country) {
-			this.country = country;
-		}
+    public void setProvince(String province) 
+    {
+        this.province = province;
+    }
 
-	@Override
-	public int getUserId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public void setPostalCode(String postalCode) 
+    {
+        this.postalCode = postalCode;
+    }
 
-	@Override
-	public String getUserFirstName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUserLastName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getEmailAddress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public UserType getUserType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setUserId(int userId) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setUserFirstName(String userFirstName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setUserLastName(String userLastName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setEmailAddress(String emailAddress) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setUserType(UserType userType) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
+    public void setCountry(String country) 
+    {
+        this.country = country;
+    }
 
 }
