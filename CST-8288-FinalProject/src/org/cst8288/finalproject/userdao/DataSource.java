@@ -16,7 +16,7 @@ public class DataSource {
 
     private DataSource() {
         // Initialize logger and className
-        logger = new LMSLogger();
+        logger = LMSLogger.getInstance();
         className = this.getClass().getName();
     }
 
@@ -53,7 +53,7 @@ public class DataSource {
             props[1] = properties.getProperty("username");
             props[2] = properties.getProperty("password");
         } catch (IOException e) {
-            logger.logError(className, "Error reading properties file: " + e.getMessage());
+            logger.error(className + " Error reading properties file: " + e.getMessage());
         }
 
         return props;
