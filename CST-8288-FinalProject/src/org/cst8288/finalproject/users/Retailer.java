@@ -1,134 +1,137 @@
 package org.cst8288.finalproject.users;
 
 import org.cst8288.finalproject.enums.UserType;
-import org.cst8288.finalproject.interfaces.UserInterface;
 
-public class Retailer implements UserInterface {
-	  private int retailerID;
-	    private int userID;
-	    private String storeName;
-	    private String streetAddress;
-	    private String city;
-	    private String province;
-	    private String postalCode;
-	    
-	    
-	public int getRetailerID() {
-			return retailerID;
-		}
+public class Retailer extends AbstractUser {
+    
+	private int retailerID;
+    private String storeName;
+    private String streetAddress;
+    private String city;
+    private String province;
+    private String postalCode;
 
-		public void setRetailerID(int retailerID) {
-			this.retailerID = retailerID;
-		}
+    //Getters
+    
+    @Override
+    public int getUserId() 
+    {
+        return super.userID;
+    }
 
-		public int getUserID() {
-			return userID;
-		}
+    @Override
+    public String getUserFirstName() 
+    {
+        return super.userFirstName;
+    }
 
-		public void setUserID(int userID) {
-			this.userID = userID;
-		}
+    @Override
+    public String getUserLastName() 
+    {
+        return super.userLastName;
+    }
 
-		public String getStoreName() {
-			return storeName;
-		}
+    @Override
+    public String getEmailAddress() 
+    {
+        return super.emailAddress;
+    }
 
-		public void setStoreName(String storeName) {
-			this.storeName = storeName;
-		}
+    @Override
+    public UserType getUserType() 
+    {
+        return super.userType;
+    }
 
-		public String getStreetAddress() {
-			return streetAddress;
-		}
+    public int getRetailerID() 
+    {
+        return retailerID;
+    }
 
-		public void setStreetAddress(String streetAddress) {
-			this.streetAddress = streetAddress;
-		}
+    public String getStoreName() 
+    {
+        return storeName;
+    }
 
-		public String getCity() {
-			return city;
-		}
+    public String getStreetAddress() 
+    {
+        return streetAddress;
+    }
 
-		public void setCity(String city) {
-			this.city = city;
-		}
+    public String getCity() 
+    {
+        return city;
+    }
 
-		public String getProvince() {
-			return province;
-		}
+    public String getProvince() 
+    {
+        return province;
+    }
 
-		public void setProvince(String province) {
-			this.province = province;
-		}
+    public String getPostalCode() 
+    {
+        return postalCode;
+    }
 
-		public String getPostalCode() {
-			return postalCode;
-		}
+    //Setters
+    
+    @Override
+    public void setUserId(int userId) 
+    {
+        super.userID = userId;
+    }
 
-		public void setPostalCode(String postalCode) {
-			this.postalCode = postalCode;
-		}
+    @Override
+    public void setUserFirstName(String userFirstName) 
+    {
+        super.userFirstName = userFirstName;
+    }
 
-	@Override
-	public int getUserId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public void setUserLastName(String userLastName) 
+    {
+        super.userLastName = userLastName;
+    }
 
-	@Override
-	public String getUserFirstName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void setEmailAddress(String emailAddress) 
+    {
+        super.emailAddress = emailAddress;
+    }
 
-	@Override
-	public String getUserLastName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void setUserType(UserType userType) 
+    {
+        super.userType = userType;
+    }
 
-	@Override
-	public String getEmailAddress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setRetailerID(int retailerID) 
+    {
+        this.retailerID = retailerID;
+    }
 
-	@Override
-	public UserType getUserType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setStoreName(String storeName) 
+    {
+        this.storeName = storeName;
+    }
 
-	@Override
-	public void setUserId(int userId) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setStreetAddress(String streetAddress) 
+    {
+        this.streetAddress = streetAddress;
+    }
 
-	@Override
-	public void setUserFirstName(String userFirstName) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setCity(String city) 
+    {
+        this.city = city;
+    }
 
-	@Override
-	public void setUserLastName(String userLastName) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setProvince(String province) 
+    {
+        this.province = province;
+    }
 
-	@Override
-	public void setEmailAddress(String emailAddress) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setUserType(UserType userType) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-
+    public void setPostalCode(String postalCode) 
+    {
+        this.postalCode = postalCode;
+    }
 }
