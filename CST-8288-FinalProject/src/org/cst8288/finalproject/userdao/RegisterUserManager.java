@@ -1,7 +1,7 @@
 package org.cst8288.finalproject.userdao;
 
 import org.cst8288.finalproject.users.UserInterface;
-import org.cst8288.finalproject.users.UserValidator;
+import org.cst8288.finalproject.validator.UserValidator;
 
 public class RegisterUserManager {
     private ManageUserDAO manageUserDAO;
