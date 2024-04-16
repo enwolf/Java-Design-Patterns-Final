@@ -1,68 +1,137 @@
 package org.cst8288.finalproject.users;
 
-public class Retailer {
-    private int retailerID;
-    private int userID;
+import org.cst8288.finalproject.enums.UserType;
+
+public class Retailer extends AbstractUser {
+    
+	private int retailerID;
     private String storeName;
     private String streetAddress;
     private String city;
     private String province;
     private String postalCode;
 
-    // Getters and Setters
-    public int getRetailerID() {
+    //Getters
+    
+    @Override
+    public int getUserId() 
+    {
+        return super.userID;
+    }
+
+    @Override
+    public String getUserFirstName() 
+    {
+        return super.userFirstName;
+    }
+
+    @Override
+    public String getUserLastName() 
+    {
+        return super.userLastName;
+    }
+
+    @Override
+    public String getEmailAddress() 
+    {
+        return super.emailAddress;
+    }
+
+    @Override
+    public UserType getUserType() 
+    {
+        return super.userType;
+    }
+
+    public int getRetailerID() 
+    {
         return retailerID;
     }
 
-    public void setRetailerID(int retailerID) {
-        this.retailerID = retailerID;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public String getStoreName() {
+    public String getStoreName() 
+    {
         return storeName;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
-    public String getStreetAddress() {
+    public String getStreetAddress() 
+    {
         return streetAddress;
     }
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-    }
-
-    public String getCity() {
+    public String getCity() 
+    {
         return city;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getProvince() {
+    public String getProvince() 
+    {
         return province;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getPostalCode() {
+    public String getPostalCode() 
+    {
         return postalCode;
     }
 
-    public void setPostalCode(String postalCode) {
+    //Setters
+    
+    @Override
+    public void setUserId(int userId) 
+    {
+        super.userID = userId;
+    }
+
+    @Override
+    public void setUserFirstName(String userFirstName) 
+    {
+        super.userFirstName = userFirstName;
+    }
+
+    @Override
+    public void setUserLastName(String userLastName) 
+    {
+        super.userLastName = userLastName;
+    }
+
+    @Override
+    public void setEmailAddress(String emailAddress) 
+    {
+        super.emailAddress = emailAddress;
+    }
+
+    @Override
+    public void setUserType(UserType userType) 
+    {
+        super.userType = userType;
+    }
+
+    public void setRetailerID(int retailerID) 
+    {
+        this.retailerID = retailerID;
+    }
+
+    public void setStoreName(String storeName) 
+    {
+        this.storeName = storeName;
+    }
+
+    public void setStreetAddress(String streetAddress) 
+    {
+        this.streetAddress = streetAddress;
+    }
+
+    public void setCity(String city) 
+    {
+        this.city = city;
+    }
+
+    public void setProvince(String province) 
+    {
+        this.province = province;
+    }
+
+    public void setPostalCode(String postalCode) 
+    {
         this.postalCode = postalCode;
     }
 }

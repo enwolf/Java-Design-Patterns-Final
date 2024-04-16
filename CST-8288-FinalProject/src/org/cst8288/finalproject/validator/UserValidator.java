@@ -1,6 +1,8 @@
-package org.cst8288.finalproject.users;
+package org.cst8288.finalproject.validator;
 
 import java.util.regex.Pattern;
+
+import org.cst8288.finalproject.users.UserInterface;
 
 public class UserValidator {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";

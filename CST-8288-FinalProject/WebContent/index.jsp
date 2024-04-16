@@ -7,6 +7,6 @@
 </head>
 <body>
     <h1>Food Waste Reduction Platform</h1>
-    <a href="signup.jsp"><button>Sign Up</button></a>
+   <a href="/CST-8288-FinalProject/jsp/signup.jsp"><button>Sign Up</button></a>
 </body>
 </html>
