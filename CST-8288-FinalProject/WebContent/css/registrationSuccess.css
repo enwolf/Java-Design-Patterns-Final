@@ -1,0 +1,61 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #5cb85c; /* Soft green, you can change it to match your theme */
+    text-align: center;
+}
+
+ul {
+    list-style: none; /* Removes bullet points from the list */
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+a {
+    display: block;
+    width: 200px;
+    height: 40px;
+    background-color: #5cb85c;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 5px;
+    margin: 20px auto; /* Centering the link horizontally */
+    transition: background-color 0.3s;
+}
+
+a:hover {
+    background-color: #4cae4c; /* Darker green on hover */
+}
+
+p {
+    text-align: center;
+}
+
+h3 {
+    text-align: left;
+    color: #555;
+}

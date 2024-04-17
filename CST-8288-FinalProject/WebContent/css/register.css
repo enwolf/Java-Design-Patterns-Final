@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	width: 400px; /* Increased width from 300px to 400px */
+	margin: 40px auto; /* Adjusted for balance */
+	padding: 30px; /* More internal space */
+	background-color: #fff;
+	border-radius: 10px; /* Slightly more rounded */
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+	text-align: center;
+	color: #333;
+	font-size: 24px; /* Larger font size for heading */
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+}
+
+input[type="text"], input[type="email"], input[type="password"], select {
+	padding: 15px; /* More padding for larger touch area */
+	margin: 10px 0;
+	border: 1px solid #ccc; /* Lighter border color */
+	border-radius: 5px; /* Slightly more rounded */
+	font-size: 16px; /* Larger font size for better readability */
+}
+
+button {
+	background-color: #5cb85c;
+	color: white;
+	padding: 15px 20px; /* More padding for a bigger button */
+	margin: 15px 0; /* More margin to avoid cramping */
+	border: none;
+	border-radius: 5px; /* Slightly more rounded */
+	cursor: pointer;
+	font-size: 16px; /* Larger text on buttons */
+}
+
+button:hover {
+	background-color: #4cae4c;
+}

@@ -2,16 +2,19 @@ package org.cst8288.finalproject.userdao;
 
 import java.util.List;
 
-import org.cst8288.finalproject.users.UserInterface;
+import org.cst8288.finalproject.users.AbstractUser;
+import org.cst8288.finalproject.users.User;
 
 public interface ManageUserDAOInterface {
-    void addUser(UserInterface user);
+    
+	void addUser(User user);
     
     void removeUser(int userID);
     
-    UserInterface returnUser(int userID);
+    User returnUser(int userID);
     
-    void updateUser(int userID, UserInterface updatedUser);
+    void updateUser(int userID, User updatedUser);
     
-    List<UserInterface> returnAllUsers();
+    List<AbstractUser> returnAllUsers();
+    
 }

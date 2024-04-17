@@ -4,15 +4,15 @@ import org.cst8288.finalproject.dao.TransactionDAO;
 import org.cst8288.finalproject.dto.Item;
 import org.cst8288.finalproject.enums.UserType;
 import org.cst8288.finalproject.interfaces.UserTypeInterface;
-import org.cst8288.finalproject.users.User;
+import org.cst8288.finalproject.users.UserTemp;
 
 public class ConsumerManager implements UserTypeInterface {
 	
-	private User userObject;
+	private UserTemp userObject;
 	private InventoryManager inventoryManagerObj;
 	private TransactionDAO transcationDAO;
 	
-	public ConsumerManager(User user,TransactionDAO transcationDAO, InventoryManager inventoryManager) 
+	public ConsumerManager(UserTemp user,TransactionDAO transcationDAO, InventoryManager inventoryManager) 
 	{
 		this.userObject = user;
 		this.inventoryManagerObj = inventoryManager;
@@ -22,12 +22,12 @@ public class ConsumerManager implements UserTypeInterface {
 	
 
 	@Override
-	public boolean VerifiyUserType(User user) 
+	public boolean VerifiyUserType(UserTemp user) 
 	{
 		return user.getType().equals(UserType.CONSUMER);
 	}
 	
-	public void PurchaseItem(User userObject) 
+	public void PurchaseItem(UserTemp userObject) 
 	{
 		
 		if (!VerifiyUserType(userObject)) 
