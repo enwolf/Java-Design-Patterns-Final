@@ -3,7 +3,6 @@ package org.cst8288.finalproject.dataaccess;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -96,15 +95,12 @@ public class DataSource {
     private static String[] openPropsFile() 
     {
         Properties props = new Properties();
-        String className = DataSource.class.getSimpleName();
+        
         LMSLogger logger = LMSLogger.getInstance();
         
-        try (InputStream in = Files.newInputStream(Paths.get("data/database.properties"))) 
-        {
+        try (InputStream in = DataSource.class.getResourceAsStream("/org/cst8288/finalproject/resources/database.properties")) {
             props.load(in);
-        }
-        catch(IOException e) 
-        {
+        } catch (IOException e) {
             logger.logException(e);
         }
         String driver = props.getProperty("dbDriver");
