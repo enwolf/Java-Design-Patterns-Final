@@ -1,4 +1,6 @@
-package org.cst8288.finalproject.userdao;
+package org.cst8288.finalproject.manager;
+
+import org.cst8288.finalproject.dao.UserAuthenticationDAO;
 
 public class UserPasswordManager {
     private UserAuthenticationDAO userAuthenticationDAO;

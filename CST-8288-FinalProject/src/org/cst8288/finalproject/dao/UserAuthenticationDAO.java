@@ -1,7 +1,9 @@
-package org.cst8288.finalproject.userdao;
+package org.cst8288.finalproject.dao;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.cst8288.finalproject.interfaces.UserAuthenticationDAOInterface;
 
 public class UserAuthenticationDAO implements UserAuthenticationDAOInterface {
     private Map<Integer, String> passwordMap; // Maps userID to password

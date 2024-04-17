@@ -1,4 +1,4 @@
-package org.cst8288.finalproject.userdao;
+package org.cst8288.finalproject.interfaces;
 
 public interface UserAuthenticationDAOInterface {
     void setPassword(int userID, String password);

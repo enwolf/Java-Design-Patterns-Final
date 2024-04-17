@@ -1,4 +1,4 @@
-package org.cst8288.finalproject.userdao;
+package org.cst8288.finalproject.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.cst8288.finalproject.dataaccess.DataSource;
 import org.cst8288.finalproject.enums.UserType;
+import org.cst8288.finalproject.interfaces.ManageUserDAOInterface;
 import org.cst8288.finalproject.users.AbstractUser;
 import org.cst8288.finalproject.users.User;
 
