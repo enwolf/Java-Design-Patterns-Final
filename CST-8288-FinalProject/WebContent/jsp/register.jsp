@@ -1,34 +1,32 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Result</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Page</title>
+<link rel="stylesheet" href="../css/register.css">
 </head>
 <body>
-    <h1>Registration Result</h1>
-    <% 
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String userType = request.getParameter("userType");
-        String contactMethod = request.getParameter("contactMethod");
-        String contactInfo = request.getParameter("contactInfo");
-
-        // You can process the registration data here (e.g., store in database, send confirmation email, etc.)
-
-        out.println("<p>First Name: " + firstName + "</p>");
-        out.println("<p>Last Name: " + lastName + "</p>");
-        out.println("<p>Email: " + email + "</p>");
-        out.println("<p>User Type: " + userType + "</p>");
-        
-        if (contactMethod != null && !contactMethod.isEmpty()) {
-            out.println("<p>Contact Method: " + contactMethod + "</p>");
-            out.println("<p>Contact Info: " + contactInfo + "</p>");
-        }
-    %>
+	<div class="container">
+		<h2>Register</h2>
+		<form action="${pageContext.request.contextPath}/register" method="POST">
+			<input type="text" name="firstName" placeholder="First Name" required>
+			<input type="text" name="lastName" placeholder="Last Name" required>
+			<input type="email" name="email" placeholder="Email Address" required>
+			<input type="password" name="password" placeholder="Password"
+				required> <select name="userType" required>
+				<option value="">Select User Type</option>
+				<option value="retailer">Retailer</option>
+				<option value="consumer">Consumer</option>
+				<option value="charitable_organization">Charitable Organization</option>
+			</select> <select name="contactMethod">
+				<option value="">Preferred Contact Method</option>
+				<option value="email">Email</option>
+				<option value="phone">Phone</option>
+			</select> <input type="text" name="contactInfo"
+				placeholder="Contact Info (Optional)">
+			<button type="submit">Register</button>
+		</form>
+	</div>
 </body>
 </html>
