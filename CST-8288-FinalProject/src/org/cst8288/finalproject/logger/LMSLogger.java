@@ -12,7 +12,7 @@ package org.cst8288.finalproject.logger;
 public class LMSLogger {
 
     private static LMSLogger lmsLoggerInstance;
-    private LogLevel currentLevel = LogLevel.INFO;
+    private LogLevel currentLevel = LogLevel.TRACE;
     
     private LMSLogger() 
     {
