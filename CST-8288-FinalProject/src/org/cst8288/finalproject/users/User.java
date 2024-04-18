@@ -4,7 +4,7 @@ import org.cst8288.finalproject.enums.UserType;
 
 public class User extends AbstractUser {
 
-    private String password;  // Additional property unique to User
+    private String password;  
 
    
     //Constructor's
