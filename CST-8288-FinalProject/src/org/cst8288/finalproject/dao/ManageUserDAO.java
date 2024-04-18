@@ -34,7 +34,7 @@ public class ManageUserDAO implements ManageUserDAOInterface {
     }
 */
     @Override
-    public void addUser(User user) 
+    public void addUser(AbstractUser user) 
     {
 
         String sqlQuery = "INSERT INTO user (FirstName, LastName, Email, Password, UserType) VALUES (?, ?, ?, ?, ?)";
@@ -45,7 +45,7 @@ public class ManageUserDAO implements ManageUserDAOInterface {
             statement.setString(1, user.getUserFirstName());
             statement.setString(2, user.getUserLastName());
             statement.setString(3, user.getEmailAddress());
-            statement.setString(4, user.getPassword());
+            statement.setString(4, ((User) user).getPassword());
             statement.setString(5, user.getUserType().toString());
 
             statement.executeUpdate();
@@ -73,7 +73,7 @@ public class ManageUserDAO implements ManageUserDAOInterface {
     }
 
     @Override
-    public User returnUser(int userID) 
+    public AbstractUser returnUser(int userID) 
     {
         String sql = "SELECT * FROM users WHERE userID = ?";
         
@@ -91,9 +91,35 @@ public class ManageUserDAO implements ManageUserDAOInterface {
         }
         return null;
     }
+    
+    @Override
+    public AbstractUser returnUserByEmail(String email) {
+        String sqlQuery = "SELECT * FROM user WHERE Email = ?";
+
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+             PreparedStatement statement = dbConnection.prepareStatement(sqlQuery)) 
+        {
+            
+            statement.setString(1, email);
+            
+            try (ResultSet resultSet = statement.executeQuery()) 
+            {
+                if (resultSet.next()) 
+                {
+                    return (User) extractUserFromResultSet(resultSet);
+                }
+            }
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        
+        }
+        return null;
+    }
 
     @Override
-    public void updateUser(int userID, User updatedUser) {
+    public void updateUser(int userID, AbstractUser updatedUser) {
         String sql = "UPDATE users SET userFirstName = ?, userLastName = ?, emailAddress = ?, userType = ? WHERE userID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, updatedUser.getUserFirstName());
@@ -128,15 +154,25 @@ public class ManageUserDAO implements ManageUserDAOInterface {
         }
         return users;
     }
-
-    private AbstractUser extractUserFromResultSet(ResultSet resultSet) throws SQLException {
-        //int userID = resultSet.getInt("userID");
-        String userFirstName = resultSet.getString("userFirstName");
-        String userLastName = resultSet.getString("userLastName");
-        String emailAddress = resultSet.getString("emailAddress");
-        String password = resultSet.getString("emailAddress");
-        UserType userType = UserType.valueOf(resultSet.getString("userType"));
-        return new User(userFirstName, userLastName,  emailAddress,  password,  userType)  ;
+    
+    /**
+     * Helper method to extract user data from the ResultSet and create a User object.
+     *
+     * @param resultSet The ResultSet from which to extract user data.
+     * @return A User object populated with data from the ResultSet.
+     * @throws SQLException if accessing the ResultSet data fails.
+     */
+    private AbstractUser extractUserFromResultSet(ResultSet resultSet) throws SQLException 
+    {
+    	User user = new User();
+        user.setUserId(resultSet.getInt("UserID"));
+        user.setUserFirstName(resultSet.getString("FirstName"));
+        user.setUserLastName(resultSet.getString("LastName"));
+        user.setEmailAddress(resultSet.getString("Email"));
+        user.setPassword(resultSet.getString("Password"));
+        user.setUserType(UserType.valueOf(resultSet.getString("UserType").toUpperCase()));
+        
+        return user;
     }
     
 }
