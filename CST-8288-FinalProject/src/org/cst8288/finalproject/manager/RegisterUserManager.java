@@ -1,5 +1,6 @@
-package org.cst8288.finalproject.userdao;
+package org.cst8288.finalproject.manager;
 
+import org.cst8288.finalproject.interfaces.ManageUserDAOInterface;
 import org.cst8288.finalproject.users.User;
 import org.cst8288.finalproject.validator.UserValidator;
 

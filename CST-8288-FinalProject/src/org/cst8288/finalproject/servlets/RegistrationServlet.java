@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.cst8288.finalproject.dao.ManageUserDAO;
 import org.cst8288.finalproject.enums.UserType;
-import org.cst8288.finalproject.userdao.ManageUserDAO;
-import org.cst8288.finalproject.userdao.RegisterUserManager;
+import org.cst8288.finalproject.manager.RegisterUserManager;
 import org.cst8288.finalproject.users.User;
 import org.cst8288.finalproject.validator.UserValidator;
 
@@ -31,8 +31,8 @@ import org.cst8288.finalproject.validator.UserValidator;
  * @see RequestDispatcher
  * @see HttpSession
  * @see org.cst8288.finalproject.enums.UserType
- * @see org.cst8288.finalproject.userdao.ManageUserDAO
- * @see org.cst8288.finalproject.userdao.RegisterUserManager
+ * @see org.cst8288.finalproject.dao.ManageUserDAO
+ * @see org.cst8288.finalproject.manager.RegisterUserManager
  * @see org.cst8288.finalproject.users.User
  * @see org.cst8288.finalproject.validator.UserValidator
  */
