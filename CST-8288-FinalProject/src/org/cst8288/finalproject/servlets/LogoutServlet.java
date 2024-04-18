@@ -12,16 +12,14 @@ public class LogoutServlet  extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
-		
-	}
-	
-	@Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-    {
-		
+        // Invalidate the session to clear all session attributes and log out the user
+        request.getSession().invalidate();
+
+        // Redirect to the logout confirmation page
+        response.sendRedirect("/jsp/logout.jsp");
     }
 
 }
