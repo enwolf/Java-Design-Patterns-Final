@@ -11,17 +11,21 @@ public class UserLoginManager {
         this.userPasswordManager = userPasswordManager;
     }
 
-    public boolean loginUser(int userID, String password) {
-        if (userPasswordManager.verifyPassword(userID, password)) {
+    public boolean loginUser(String userEmail, String password) {
+        if (userPasswordManager.verifyPassword(userEmail, password)) 
+        {
             System.out.println("User logged in successfully.");
             return true;
-        } else {
+        } 
+        else 
+        {
             System.out.println("User login failed. Invalid credentials.");
             return false;
         }
     }
 
-    public void logoutUser(int userID) {
+    public void logoutUser(int userID) 
+    {
         manageUserDAO.removeUser(userID);
         System.out.println("User logged out.");
     }
