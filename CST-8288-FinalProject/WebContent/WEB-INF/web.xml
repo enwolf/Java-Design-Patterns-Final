@@ -25,6 +25,11 @@
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>org.cst8288.finalproject.servlets.LoginServlet</servlet-class>
   </servlet>
+  
+    <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>org.cst8288.finalproject.servlets.LogoutServlet</servlet-class>
+  </servlet>
 
   <!-- Servlet Mapping -->
   <servlet-mapping>
@@ -35,6 +40,11 @@
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
   </servlet-mapping>
   
 
