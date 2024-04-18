@@ -18,12 +18,12 @@ body {
 }
 
 h1 {
-    color: #5cb85c; /* Soft green, you can change it to match your theme */
+    color: #5cb85c; 
     text-align: center;
 }
 
 ul {
-    list-style: none; /* Removes bullet points from the list */
+    list-style: none;
     padding: 0;
 }
 
@@ -43,12 +43,12 @@ a {
     text-align: center;
     line-height: 40px;
     border-radius: 5px;
-    margin: 20px auto; /* Centering the link horizontally */
+    margin: 20px auto; 
     transition: background-color 0.3s;
 }
 
 a:hover {
-    background-color: #4cae4c; /* Darker green on hover */
+    background-color: #4cae4c; 
 }
 
 p {
