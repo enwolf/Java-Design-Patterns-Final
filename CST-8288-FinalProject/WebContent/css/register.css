@@ -1,51 +1,63 @@
 @charset "UTF-8";
 
 body {
-	font-family: Arial, sans-serif;
-	background-color: #f4f4f4;
-	margin: 0;
-	padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-	width: 400px; /* Increased width from 300px to 400px */
-	margin: 40px auto; /* Adjusted for balance */
-	padding: 30px; /* More internal space */
-	background-color: #fff;
-	border-radius: 10px; /* Slightly more rounded */
-	box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    width: 400px; /* Appropriate width to handle form elements comfortably */
+    margin: 40px auto; /* Center align the container */
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px; /* Rounded corners for a soft, modern look */
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 h2 {
-	text-align: center;
-	color: #333;
-	font-size: 24px; /* Larger font size for heading */
+    text-align: center;
+    color: #333;
+    font-size: 24px; /* Clear and legible heading */
 }
 
 form {
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column; /* Organize form fields in a single column */
 }
 
+/* Style rules for all text-based inputs and selects */
 input[type="text"], input[type="email"], input[type="password"], select {
-	padding: 15px; /* More padding for larger touch area */
-	margin: 10px 0;
-	border: 1px solid #ccc; /* Lighter border color */
-	border-radius: 5px; /* Slightly more rounded */
-	font-size: 16px; /* Larger font size for better readability */
+    width: 100%; /* Forces the input to occupy all available horizontal space */
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc; /* Uniform border */
+    border-radius: 5px; /* Smoothed corners */
+    font-size: 16px; /* Ideal for readability without zoom */
+    box-sizing: border-box; /* Includes padding and border in the element's width */
 }
 
-button {
-	background-color: #5cb85c;
-	color: white;
-	padding: 15px 20px; /* More padding for a bigger button */
-	margin: 15px 0; /* More margin to avoid cramping */
-	border: none;
-	border-radius: 5px; /* Slightly more rounded */
-	cursor: pointer;
-	font-size: 16px; /* Larger text on buttons */
+/* Additional styles for dynamic fields to integrate seamlessly */
+#retailerFields, #consumerFields, #charitableFields {
+    display: none; /* Hidden by default, shown based on selection */
+    padding: 10px 0; /* Padding for visual spacing */
+   
 }
 
-button:hover {
-	background-color: #4cae4c;
+.button {
+    display: block; /* Ensures it is a block element and can take width properties */
+    width: 100%; /* Makes the button fill the width of its container */
+    padding: 15px 20px; /* Adjust padding as needed */
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Adjust font size as needed */
+    text-align: center; /* Ensures text is centered */
+}
+
+.button:hover {
+    background-color: #4cae4c;
 }
