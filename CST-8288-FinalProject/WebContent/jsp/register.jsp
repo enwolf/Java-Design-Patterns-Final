@@ -28,8 +28,8 @@
         	// Find all input and select elements within the current field and remove the 'required' attribute
         	Array.from(field.querySelectorAll("input, select")).forEach(input => {
             	input.required = false;
-        });
-    });
+        	});
+    	});
 
 	    // If a valid user type is selected and it has corresponding fields defined,
 	    // show these fields and set their inputs as required.
