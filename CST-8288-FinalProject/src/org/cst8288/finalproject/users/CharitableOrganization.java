@@ -1,47 +1,16 @@
 package org.cst8288.finalproject.users;
 
-import org.cst8288.finalproject.enums.UserType;
-
-public class CharitableOrganization extends AbstractUser {
+public class CharitableOrganization extends User {
 
     private int organizationID;
     private String organizationName;
+    private String streetAddress;
     private String city;
     private String province;
     private String postalCode;
     private String country;
 
     // Getters
-        @Override
-    public int getUserId() 
-    {
-        return super.userID; 
-    }
-
-    @Override
-    public String getUserFirstName() 
-    {
-        return super.userFirstName; 
-    }
-
-    @Override
-    public String getUserLastName() 
-    {
-        return super.userLastName;  
-    }
-
-    @Override
-    public String getEmailAddress() 
-    {
-        return super.emailAddress;  
-    }
-
-    @Override
-    public UserType getUserType() 
-    {
-        return super.userType;  
-    }
-    
     public int getOrganizationID() 
     {
         return organizationID;
@@ -51,6 +20,11 @@ public class CharitableOrganization extends AbstractUser {
     {
         return organizationName;
     }
+    
+	public String getStreetAddress() 
+	{
+		return streetAddress;
+	}
 
     public String getCity() 
     {
@@ -73,44 +47,15 @@ public class CharitableOrganization extends AbstractUser {
     }
 
     // Setters
-    @Override
-    public void setUserId(int userId) 
-    {
-        super.userID = userId;  
-    }
-
-    @Override
-    public void setUserFirstName(String userFirstName) 
-    {
-        super.userFirstName = userFirstName; 
-    }
-
-    @Override
-    public void setUserLastName(String userLastName) 
-    {
-        super.userLastName = userLastName;  
-    }
-
-    @Override
-    public void setEmailAddress(String emailAddress) 
-    {
-        super.emailAddress = emailAddress;  
-    }
-
-    @Override
-    public void setUserType(UserType userType) 
-    {
-        super.userType = userType;  
-    }
-    public void setOrganizationID(int organizationID) 
-    {
-        this.organizationID = organizationID;
-    }
-
     public void setOrganizationName(String organizationName) 
     {
         this.organizationName = organizationName;
     }
+
+	public void setStreetAddress(String streetAddress)
+	{
+		this.streetAddress = streetAddress;
+	}
 
     public void setCity(String city) 
     {
@@ -131,5 +76,4 @@ public class CharitableOrganization extends AbstractUser {
     {
         this.country = country;
     }
-
 }
