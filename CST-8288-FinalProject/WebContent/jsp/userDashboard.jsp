@@ -15,15 +15,19 @@
         <section>
             <h2>Profile: ${user.userFirstName} ${user.userLastName}</h2>
             <div class="profile-details">
+                <p><strong>User Type:</strong> ${user.userType}</p>
                 <p><strong>First Name:</strong> ${user.userFirstName}</p>
                 <p><strong>Last Name:</strong> ${user.userLastName}</p>
                 <p><strong>Email:</strong> ${user.emailAddress}</p>
-                <p><strong>User Type:</strong> ${user.userType}</p>
+                
             </div>
-            <a href="/editProfile.jsp" class="button">Edit Profile</a> 
+            <form action="${pageContext.request.contextPath}/jsp/editProfile.jsp" method="post" class="profile-form">
+                <input type="hidden" name="userId" value="${user.userId}">
+                <button type="submit" class="button">Edit Profile</button>
+            </form>
         </section>
         <footer>
-            <a href="/logout" class="button">Logout</a> 
+            <a href="${pageContext.request.contextPath}/logout" class="button">Logout</a> 
         </footer>
     </div>
 </body>
