@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="../css/login.css"> 
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css"> 
 </head>
 <body>
     <div class="login-container">
@@ -23,7 +23,7 @@
             </div>
             <div class="links">
                 <a href="forgot-password">Forgot Password?</a> 
-                <a href="register.jsp">Need an account? Sign Up</a>
+                <a href="${pageContext.request.contextPath}/jsp/register.jsp">Need an account? Sign Up</a>
             </div>
         </form>
     </div>
