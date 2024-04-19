@@ -58,6 +58,11 @@
     <servlet-name>EditProfileServlet</servlet-name>
     <servlet-class>org.cst8288.finalproject.servlets.EditProfileServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>InventoryServlet</servlet-name>
+    <servlet-class>org.cst8288.finalproject.servlets.InventoryServlet</servlet-class>
+  </servlet>
 
   <!-- Servlet Mapping -->
   <servlet-mapping>
@@ -78,6 +83,11 @@
   <servlet-mapping>
     <servlet-name>EditProfileServlet</servlet-name>
     <url-pattern>/editProfile</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>InventoryServlet</servlet-name>
+    <url-pattern>/inventory</url-pattern>
   </servlet-mapping>
   
   
