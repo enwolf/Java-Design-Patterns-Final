@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -17,32 +16,19 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        // Initialization code, if any
-    }
-
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filter)
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-
-        // Get the session
+        // Get the existing session
         HttpSession session = httpRequest.getSession(false);
 
-        // Check if the session exists and if the user is authenticated
-        if (session == null || session.getAttribute("user") == null) {
-            // If the user is not authenticated, redirect to the login page
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/jsp/login.jsp");
-            return;
-        }
-
-        // If the user is authenticated, proceed with the request
-        filter.doFilter(request, response);
-    }
-
-    @Override
-    public void destroy() {
-        // Cleanup code, if any
+        // Check if a session exists and if it contains the "user" attribute
+        if (session != null && session.getAttribute("user") != null) 
+            // User is logged in, so just continue the request.
+            filter.doFilter(request, response);
+        else 
+            // No user is logged in, redirect to the login page
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/jsp/login.jsp");        
     }
 }
