@@ -14,7 +14,7 @@ public interface ManageUserDAOInterface {
     
     AbstractUser returnUser(int userID);
     
-    void updateUser(int userID, AbstractUser updatedUser);
+    void updateUser(AbstractUser updatedUser);
     
     List<AbstractUser> returnAllUsers();
 

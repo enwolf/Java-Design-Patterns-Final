@@ -15,6 +15,7 @@
             <ul>
                 <li><a href="/CST-8288-FinalProject/jsp/register.jsp">Register</a></li>
                 <li><a href="/CST-8288-FinalProject/jsp/login.jsp">Login</a></li>
+                <li><a href="/CST-8288-FinalProject/jsp/userDashboard.jsp">Dashboard</a></li>
                 <li><a href="/CST-8288-FinalProject/jsp/aboutUs.jsp">About Us</a></li>
             </ul>
         </nav>
