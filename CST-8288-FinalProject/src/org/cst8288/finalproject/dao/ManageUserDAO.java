@@ -11,6 +11,7 @@ import java.util.List;
 import org.cst8288.finalproject.dataaccess.DataSource;
 import org.cst8288.finalproject.enums.UserType;
 import org.cst8288.finalproject.interfaces.ManageUserDAOInterface;
+import org.cst8288.finalproject.logger.LMSLogger;
 import org.cst8288.finalproject.users.AbstractUser;
 import org.cst8288.finalproject.users.User;
 
@@ -18,6 +19,7 @@ public class ManageUserDAO implements ManageUserDAOInterface {
     private static final String JDBC_URL = "";
     private static final String USERNAME = "";
     private static final String PASSWORD = "";
+    private static final LMSLogger LOGGER = LMSLogger.getInstance();
 
     private Connection connection;
 /*
@@ -34,28 +36,60 @@ public class ManageUserDAO implements ManageUserDAOInterface {
     }
 */
     @Override
-    public void addUser(AbstractUser user) 
-    {
+    public void addUser(AbstractUser user) {
+        String sqlQuery = "INSERT INTO user (FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?)";
 
-        String sqlQuery = "INSERT INTO user (FirstName, LastName, Email, Password, UserType) VALUES (?, ?, ?, ?, ?)";
-
-        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();  // Proper connection handling
-             PreparedStatement statement = dbConnection.prepareStatement(sqlQuery)) 
-        {
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+             PreparedStatement statement = dbConnection.prepareStatement(sqlQuery)) {
             statement.setString(1, user.getUserFirstName());
             statement.setString(2, user.getUserLastName());
             statement.setString(3, user.getEmailAddress());
             statement.setString(4, ((User) user).getPassword());
-            statement.setString(5, user.getUserType().toString());
 
-            statement.executeUpdate();
-        } 
-        catch (SQLException e)
-        {
-            e.printStackTrace();  
-
+            int rowsAffected = statement.executeUpdate();
+            LMSLogger.getInstance().info("Added " + rowsAffected + " user(s) to the database from ManageUserDAO class.");
+        } catch (SQLException e) {
+            LMSLogger.getInstance().error("Error occurred while adding user to the database from ManageUserDAO class: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
+    @Override
+    public void updateUser(AbstractUser updatedUser) {
+        String sqlSelect = "SELECT userID FROM user WHERE Email = ?";
+        String sqlUpdate = "UPDATE user SET FirstName = ?, LastName = ?, Email = ?, Password = ? WHERE userID = ?";
+
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+             PreparedStatement selectStatement = dbConnection.prepareStatement(sqlSelect);
+             PreparedStatement updateStatement = dbConnection.prepareStatement(sqlUpdate)) {
+            selectStatement.setString(1, updatedUser.getEmailAddress());
+            ResultSet resultSet = selectStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int userID = resultSet.getInt("userID");
+
+                updateStatement.setString(1, updatedUser.getUserFirstName());
+                updateStatement.setString(2, updatedUser.getUserLastName());
+                updateStatement.setString(3, updatedUser.getEmailAddress());
+                updateStatement.setString(4, ((User) updatedUser).getPassword());
+                updateStatement.setInt(5, userID);
+
+                LOGGER.debug("Preparing to update database with: " + sqlUpdate);
+                int rowsAffected = updateStatement.executeUpdate();
+                
+                LOGGER.info("Updated " + rowsAffected + " user(s). User details: " + updatedUser.toString());
+                LMSLogger.getInstance().info("Updated " + rowsAffected + " user(s) in the database from ManageUserDAO class. Details: " + updatedUser.toString());
+            }
+        } catch (SQLException e) {
+        	
+            LMSLogger.getInstance().error("Error occurred while updating user in the database from ManageUserDAO class: " + e.getMessage());
+            LOGGER.error("SQL Error occurred: " + e.getMessage());
+            
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public void removeUser(int userID) {
@@ -118,21 +152,8 @@ public class ManageUserDAO implements ManageUserDAOInterface {
         return null;
     }
 
-    @Override
-    public void updateUser(int userID, AbstractUser updatedUser) {
-        String sql = "UPDATE users SET userFirstName = ?, userLastName = ?, emailAddress = ?, userType = ? WHERE userID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, updatedUser.getUserFirstName());
-            statement.setString(2, updatedUser.getUserLastName());
-            statement.setString(3, updatedUser.getEmailAddress());
-            statement.setString(4, updatedUser.getUserType().toString());
-            statement.setInt(5, userID);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle SQL exception
-        }
-    }
+
+
 
     @Override
     public List<AbstractUser> returnAllUsers() 
