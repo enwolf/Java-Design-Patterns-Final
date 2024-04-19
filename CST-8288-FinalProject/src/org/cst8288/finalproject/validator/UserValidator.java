@@ -3,6 +3,7 @@ package org.cst8288.finalproject.validator;
 import java.util.regex.Pattern;
 
 import org.cst8288.finalproject.enums.UserType;
+import org.cst8288.finalproject.users.AbstractUser;
 import org.cst8288.finalproject.users.User;
 
 public class UserValidator{
@@ -44,7 +45,7 @@ public class UserValidator{
         return true; //pattern.matcher(password).matches();
     }
 
-    public boolean validateUser(User user) 
+    public boolean validateUser(AbstractUser user) 
     {    	
         StringBuilder errors = new StringBuilder();
         boolean isValid = true;
@@ -79,7 +80,7 @@ public class UserValidator{
             isValid = false;
         }
 
-        if (!validatePassword(user.getPassword())) 
+        if (!validatePassword(((User) user).getPassword())) 
         {
             errors.append("Invalid password.\n");
             isValid = false;
