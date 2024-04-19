@@ -27,7 +27,7 @@ public class EditProfileServlet extends HttpServlet {
         if (session == null || session.getAttribute("user") == null) 
         {
             LOGGER.warn(CLASS_NAME + ": Session not found or no user attribute in session.");
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("/jsp/login.jsp");
             return;
         }
         LOGGER.debug(CLASS_NAME + ": Forwarding to editProfile.jsp");
@@ -41,7 +41,7 @@ public class EditProfileServlet extends HttpServlet {
 
         if (session == null || session.getAttribute("user") == null) {
             LOGGER.warn(CLASS_NAME + ": Invalid session or user not found.");
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("/jsp/login.jsp");
             return;
         }
 
@@ -92,6 +92,6 @@ public class EditProfileServlet extends HttpServlet {
             LOGGER.error(CLASS_NAME + ": Failed to update profile.");
             request.setAttribute("errorMessage", "Failed to update profile.");
         }
-        request.getRequestDispatcher("/editProfile.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/editProfile.jsp").forward(request, response);
     }
 }
