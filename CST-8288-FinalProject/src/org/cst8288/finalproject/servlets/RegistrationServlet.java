@@ -26,8 +26,8 @@ import org.cst8288.finalproject.validator.UserValidator;
  * to a success page. The servlet logs registration errors to the console for debugging purposes.
  * 
  * @author Robin Phillis
- * @version 1.0
- * @since 2024-04-12
+ * @version 2.0
+ * @since 2024-04-19
  * @see HttpServlet
  * @see HttpServletRequest
  * @see HttpServletResponse
@@ -42,8 +42,7 @@ import org.cst8288.finalproject.validator.UserValidator;
 public class RegistrationServlet extends HttpServlet{
 
 	
-	//The IDE ask me for this and it made an error go away so I left it. 
-	 
+	//The IDE ask me for this and it made an error go away so I left it.	 
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -138,7 +137,7 @@ public class RegistrationServlet extends HttpServlet{
                  consumer.setCity(request.getParameter("consumerCity"));
                  consumer.setProvince(request.getParameter("consumerProvince"));
                  consumer.setPostalCode(request.getParameter("consumerPostalCode"));
-                 consumer.setAccountBalance(0.00);  // Default value
+                 consumer.setAccountBalance(Double.parseDouble(request.getParameter("accountBalance")));  //Sets default value from hidden input.
                  
                  registerUserManager.registerConsumer(consumer);
                  break;
