@@ -13,6 +13,9 @@ import org.cst8288.finalproject.enums.UserType;
 import org.cst8288.finalproject.interfaces.ManageUserDAOInterface;
 import org.cst8288.finalproject.logger.LMSLogger;
 import org.cst8288.finalproject.users.AbstractUser;
+import org.cst8288.finalproject.users.CharitableOrganization;
+import org.cst8288.finalproject.users.Consumer;
+import org.cst8288.finalproject.users.Retailer;
 import org.cst8288.finalproject.users.User;
 
 public class ManageUserDAO implements ManageUserDAOInterface {
@@ -22,19 +25,31 @@ public class ManageUserDAO implements ManageUserDAOInterface {
     private Connection connection;
 
     @Override
-    public void addUser(AbstractUser user) 
+    public int addUser(AbstractUser user) 
     {
-        String sqlQuery = "INSERT INTO user (FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?)";
+    	int userId = 0;
+    	String sqlQuery = "INSERT INTO user (FirstName, LastName, Email, Password, UserType) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
-             PreparedStatement statement = dbConnection.prepareStatement(sqlQuery)) 
+        		PreparedStatement insertStatement = dbConnection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS))
         {
-            statement.setString(1, user.getUserFirstName());
-            statement.setString(2, user.getUserLastName());
-            statement.setString(3, user.getEmailAddress());
-            statement.setString(4, ((User) user).getPassword());
-
-            int rowsAffected = statement.executeUpdate();
+            insertStatement.setString(1, user.getUserFirstName());
+            insertStatement.setString(2, user.getUserLastName());
+            insertStatement.setString(3, user.getEmailAddress());
+            insertStatement.setString(4, ((User) user).getPassword());
+            insertStatement.setString(5, user.getUserType().name());
+            
+            int rowsAffected = insertStatement.executeUpdate();
+            
+            if (rowsAffected > 0) 
+            {
+                try (ResultSet getUserIDKey = insertStatement.getGeneratedKeys()) 
+                {
+                    if (getUserIDKey.next()) {
+                        userId = getUserIDKey.getInt(1);  
+                    }
+                }
+            }
             LMSLogger.getInstance().info("Added " + rowsAffected + " user(s) to the database from ManageUserDAO class.");
         }
         catch (SQLException e) 
@@ -42,6 +57,7 @@ public class ManageUserDAO implements ManageUserDAOInterface {
             LMSLogger.getInstance().error("Error occurred while adding user to the database from ManageUserDAO class: " + e.getMessage());
             e.printStackTrace();
         }
+        return userId;
     }
     @Override
     public void updateUser(AbstractUser updatedUser) 
@@ -85,9 +101,86 @@ public class ManageUserDAO implements ManageUserDAOInterface {
             e.printStackTrace();
         }
     }
+    
+    // Add consumer details using a Consumer object
+    public void addConsumerDetails(Consumer consumer) 
+    {
+        String sqlInsert = "INSERT INTO consumer (PhoneNumber, StreetAddress, City, Province, PostalCode, AccountBalance, UserID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+             PreparedStatement insertStatement = dbConnection.prepareStatement(sqlInsert)) 
+        {
+        	insertStatement.setString(1, consumer.getPhoneNumber());
+        	insertStatement.setString(2, consumer.getStreetAddress());
+        	insertStatement.setString(3, consumer.getCity());
+        	insertStatement.setString(4, consumer.getProvince());
+        	insertStatement.setString(5, consumer.getPostalCode());
+        	insertStatement.setDouble(6, consumer.getAccountBalance());
+        	insertStatement.setInt(7, consumer.getUserId());
+        	
+        	insertStatement.executeUpdate();
+            LOGGER.info("Consumer details added for UserID: " + consumer.getUserId());
+        } 
+        catch (SQLException e) 
+        {
+            LOGGER.error("Failed to add consumer details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Add retailer details using a Retailer object
+    public void addRetailerDetails(Retailer retailer) 
+    {
+        String sqlInsert = "INSERT INTO retailer (StoreName, StreetAddress, City, Province, PostalCode, UserID) VALUES (?, ?, ?, ?, ?, ?)";
+        
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+             PreparedStatement insertStatement = dbConnection.prepareStatement(sqlInsert)) 
+        {
+            insertStatement.setString(1, retailer.getStoreName());
+            insertStatement.setString(2, retailer.getStreetAddress());
+            insertStatement.setString(3, retailer.getCity());
+            insertStatement.setString(4, retailer.getProvince());
+            insertStatement.setString(5, retailer.getPostalCode());
+            insertStatement.setInt(6, retailer.getUserId());
+            
+            insertStatement.executeUpdate();
+            LOGGER.info("Retailer details added for UserID: " + retailer.getUserId());
+        }
+        catch (SQLException e) 
+        {
+            LOGGER.error("Failed to add retailer details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Add charitable organization details using a CharitableOrganization object
+    public void addCharitableOrgDetails(CharitableOrganization organization)     {
+    
+    	String sqlInsert = "INSERT INTO charitableOrganization (OrganizationName, StreetAddress, City, Province, PostalCode, UserID) VALUES (?, ?, ?, ?, ?, ?)";
+        
+    	try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+             PreparedStatement insertStatement = dbConnection.prepareStatement(sqlInsert)) 
+        {
+            insertStatement.setString(1, organization.getOrganizationName());
+            insertStatement.setString(2, organization.getStreetAddress());
+            insertStatement.setString(3, organization.getCity());
+            insertStatement.setString(4, organization.getProvince());
+            insertStatement.setString(5, organization.getPostalCode());
+            insertStatement.setInt(6, organization.getUserId());
+            
+            insertStatement.executeUpdate();
+            LOGGER.info("Charitable organization details added for UserID: " + organization.getUserId());
+        }
+        catch (SQLException e) 
+        {
+            LOGGER.error("Failed to add charitable organization details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @Override
-    public void removeUser(int userID) {
+    public void removeUser(int userID) 
+    {
         
     	String sql = "DELETE FROM users WHERE userID = ?";
         
