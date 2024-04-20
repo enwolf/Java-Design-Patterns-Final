@@ -12,6 +12,7 @@ import org.cst8288.finalproject.dataaccess.DataSource;
 import org.cst8288.finalproject.dto.FoodItem;
 import org.cst8288.finalproject.dto.Item;
 import org.cst8288.finalproject.interfaces.InventoryManagerDAOInterface;
+import org.cst8288.finalproject.logger.LMSLogger;
 
 /**
  * Data Access Object (DAO) for handling inventory management operations in the database.
@@ -25,7 +26,7 @@ import org.cst8288.finalproject.interfaces.InventoryManagerDAOInterface;
  * @see org.cst8288.finalproject.interfaces.InventoryManagerDAOInterface
  */
 public class InventoryManagerDAO implements InventoryManagerDAOInterface {
-
+	private static final LMSLogger logger = LMSLogger.getInstance();
 	/**
 	 * Adds a new inventory item to the database. This method inserts a record into the 'inventory'
 	 * table using the attributes of the provided inventoryItem object. It handles both standard and
@@ -43,44 +44,66 @@ public class InventoryManagerDAO implements InventoryManagerDAOInterface {
 	 */
 	@Override
 	public void addInventoryItem(Item inventoryItem) throws SQLException {
-	    String insertSqlQuery = "INSERT INTO inventory (retailerID, itemName, quantity, expirationDate, price, isSurplus, discountRate, discountAmount) "
-	                          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	    String insertSqlQuery = "INSERT INTO inventory (retailerID, itemName, quantity, expirationDate, price, discountRate, discountAmount) "
+	                          + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 	    try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
 	         PreparedStatement preparedStatement = dbConnection.prepareStatement(insertSqlQuery)) 
 	    {
-	        preparedStatement.setString(1, inventoryItem.getRetailerID().trim());
+	        preparedStatement.setInt(1, inventoryItem.getRetailerID());
 	        preparedStatement.setString(2, inventoryItem.getItemName().trim());
 	        preparedStatement.setInt(3, inventoryItem.getQuantity());
 	        preparedStatement.setDate(4, new java.sql.Date(inventoryItem.getExpirationDate().getTime()));
 	        preparedStatement.setDouble(5, inventoryItem.getPrice());
-	        preparedStatement.setBoolean(6, inventoryItem.isSurplus());
-
+        
 	        // Handling null BigDecimal values
 	        BigDecimal discountRate = inventoryItem.getDiscountRate();
 	        
 	        if (discountRate != null) 
 	        {
-	            preparedStatement.setBigDecimal(7, discountRate);
+	            preparedStatement.setBigDecimal(6, discountRate);
 	        } 
 	        else
 	        {
-	            preparedStatement.setNull(7, java.sql.Types.DECIMAL);
+	            preparedStatement.setNull(6, java.sql.Types.DECIMAL);
 	        }
 
 	        BigDecimal discountAmount = inventoryItem.getDiscountAmount();
 	        
 	        if (discountAmount != null) 
 	        {
-	            preparedStatement.setBigDecimal(8, discountAmount);
+	            preparedStatement.setBigDecimal(7, discountAmount);
 	        }
 	        else 
 	        {
-	            preparedStatement.setNull(8, java.sql.Types.DECIMAL);
+	            preparedStatement.setNull(7, java.sql.Types.DECIMAL);
 	        }
 
-	        preparedStatement.executeUpdate();
-	    }
+	        logger.debug("Setting preparedStatement parameters: RetailerID=" + inventoryItem.getRetailerID() +
+	                ", ItemName='" + inventoryItem.getItemName().trim() + "', Quantity=" + inventoryItem.getQuantity() +
+	                ", ExpirationDate=" + inventoryItem.getExpirationDate() +
+	                ", Price=" + inventoryItem.getPrice() +
+	                ", DiscountRate=" + inventoryItem.getDiscountRate() +
+	                ", DiscountAmount=" + inventoryItem.getDiscountAmount());
+	        
+	        int affectedRows = preparedStatement.executeUpdate();
+	        
+	        if (affectedRows > 0) 
+	        {
+	            logger.info("Item successfully added to inventory. Affected rows: " + affectedRows);
+	        }
+	        else 
+	        {
+	            logger.warn("No rows affected while adding inventory item.");
+	        }
+	    } 
+	    catch (SQLException e) 
+	    {
+	        logger.error("SQL Exception occurred while adding inventory item: " + e.getMessage());
+	        throw e;  	    }
+
+	    logger.info("Exiting addInventoryItem method.");
 	}
+	
 
 	/**
 	 * Updates the details of an existing inventory item in the database.
@@ -107,7 +130,7 @@ public class InventoryManagerDAO implements InventoryManagerDAOInterface {
 	    try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
 	         PreparedStatement preparedStatement = dbConnection.prepareStatement(updateSqlQuery)) 
 	    {
-	        preparedStatement.setString(1, inventoryItem.getRetailerID().trim());
+	        preparedStatement.setInt(1, inventoryItem.getRetailerID());
 	        preparedStatement.setString(2, inventoryItem.getItemName().trim());
 	        preparedStatement.setInt(3, inventoryItem.getQuantity());
 	        preparedStatement.setDate(4, new java.sql.Date(inventoryItem.getExpirationDate().getTime()));
@@ -185,14 +208,14 @@ public class InventoryManagerDAO implements InventoryManagerDAOInterface {
                 {
                     inventoryItem = new FoodItem();
                     inventoryItem.setItemID(resultSet.getInt("InventoryID"));
-                    inventoryItem.setRetailerID(resultSet.getString("RetailerID"));
+                    inventoryItem.setRetailerID(resultSet.getInt("RetailerID"));
                     inventoryItem.setItemName(resultSet.getString("ItemName"));
                     inventoryItem.setQuantity(resultSet.getInt("Quantity"));
                     inventoryItem.setExpirationDate(resultSet.getDate("ExpirationDate"));
                     inventoryItem.setPrice(resultSet.getDouble("Price"));
                     inventoryItem.setDiscountRate(resultSet.getBigDecimal("DiscountRate"));
                     inventoryItem.setDiscountAmount(resultSet.getBigDecimal("DiscountAmount"));
-                    inventoryItem.setSurplus(resultSet.getBoolean("isSurplus"));
+                    
                 }
             }
         }
@@ -262,7 +285,7 @@ public class InventoryManagerDAO implements InventoryManagerDAOInterface {
             {
                 Item inventoryItem = new FoodItem();
                 inventoryItem.setItemID(resultSet.getInt("InventoryID"));
-                inventoryItem.setRetailerID(resultSet.getString("RetailerID"));
+                inventoryItem.setRetailerID(resultSet.getInt("RetailerID"));
                 inventoryItem.setItemName(resultSet.getString("ItemName"));
                 inventoryItem.setQuantity(resultSet.getInt("Quantity"));
                 inventoryItem.setExpirationDate(resultSet.getDate("ExpirationDate"));
@@ -308,15 +331,14 @@ public class InventoryManagerDAO implements InventoryManagerDAOInterface {
             {
                 Item inventoryItem = new FoodItem();
                 inventoryItem.setItemID(resultSet.getInt("InventoryID"));
-                inventoryItem.setRetailerID(resultSet.getString("RetailerID"));
+                inventoryItem.setRetailerID(resultSet.getInt("RetailerID"));
                 inventoryItem.setItemName(resultSet.getString("ItemName"));
                 inventoryItem.setQuantity(resultSet.getInt("Quantity"));
                 inventoryItem.setExpirationDate(resultSet.getDate("ExpirationDate"));
                 inventoryItem.setPrice(resultSet.getDouble("Price"));
                 inventoryItem.setDiscountRate(resultSet.getBigDecimal("DiscountRate"));
                 inventoryItem.setDiscountAmount(resultSet.getBigDecimal("DiscountAmount"));
-                // Assuming we want to set surplus status as true for these items... not sure about this anymore.
-                inventoryItem.setSurplus(true);
+                                
                 surplusInventoryItems.add(inventoryItem);
             }
         }
