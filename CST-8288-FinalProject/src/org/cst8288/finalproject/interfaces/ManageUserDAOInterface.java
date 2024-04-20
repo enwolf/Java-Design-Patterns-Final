@@ -12,21 +12,25 @@ public interface ManageUserDAOInterface {
 	int addUser(AbstractUser user);
     
     void removeUser(int userID);
-    
-    AbstractUser returnUserByEmail(String email);
-    
-    AbstractUser returnUser(int userID);
-    
+          
     void updateUser(AbstractUser updatedUser);
     
-    List<AbstractUser> returnAllUsers();
-
 	void addConsumerDetails(Consumer consumer);
 
 	void addRetailerDetails(Retailer retailer);
 
-	void addCharitableOrgDetails(CharitableOrganization organization);
-
+	void addCharitableOrganizationDetails(CharitableOrganization organization);
 	
+	AbstractUser returnUserByEmail(String email);
+    
+    AbstractUser returnUser(int userID);
+    
+	List<AbstractUser> returnAllUsers();
+	
+	Retailer getRetailerSpecificData(int userID);
+	
+	Consumer getConsumerSpecificData(int userID);
+	
+	CharitableOrganization getCharitableOrganizationSpecificData(int userID);
     
 }
