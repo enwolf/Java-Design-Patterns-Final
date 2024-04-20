@@ -269,7 +269,6 @@ public class InventoryManagerDAO implements InventoryManagerDAOInterface {
                 inventoryItem.setPrice(resultSet.getDouble("Price"));
                 inventoryItem.setDiscountRate(resultSet.getBigDecimal("DiscountRate"));
                 inventoryItem.setDiscountAmount(resultSet.getBigDecimal("DiscountAmount"));
-                inventoryItem.setSurplus(resultSet.getBoolean("isSurplus"));
                 inventoryItems.add(inventoryItem);
             }
         }
