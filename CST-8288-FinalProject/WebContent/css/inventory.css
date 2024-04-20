@@ -1,1 +1,56 @@
 @charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 40px 0 0 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #4CAF50; /* Darker green for the table header */
+    color: white; /* White text color for contrast */
+    padding: 10px; /* More padding for a better look */
+    text-align: left; /* Text alignment can be adjusted as needed */
+}
+
+
+/* Candy striping for rows */
+tr:nth-child(even) {
+    background-color: #ecf8ec !important; /* Light green for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff !important; /* White for odd rows */
+}
+
+/* Hover effect for entire row */
+tr:hover td {
+    background-color: #e3fcff;
+}
