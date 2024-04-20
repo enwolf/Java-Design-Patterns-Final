@@ -9,32 +9,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cst8288.finalproject.dataaccess.DataSource;
-import org.cst8288.finalproject.enums.UserType;
 import org.cst8288.finalproject.interfaces.ManageUserDAOInterface;
 import org.cst8288.finalproject.logger.LMSLogger;
+import org.cst8288.finalproject.service.UserDataExtractorService;
 import org.cst8288.finalproject.users.AbstractUser;
+import org.cst8288.finalproject.users.CharitableOrganization;
+import org.cst8288.finalproject.users.Consumer;
+import org.cst8288.finalproject.users.Retailer;
 import org.cst8288.finalproject.users.User;
 
 public class ManageUserDAO implements ManageUserDAOInterface {
 
 	private static final LMSLogger LOGGER = LMSLogger.getInstance();
-
+	private UserDataExtractorService userDataExtractorService;
     private Connection connection;
+    
+    public ManageUserDAO(UserDataExtractorService userDataExtractorService) 
+    {
+    	this.userDataExtractorService = new UserDataExtractorService();
+    }
 
     @Override
-    public void addUser(AbstractUser user) 
+    public int addUser(AbstractUser user) 
     {
-        String sqlQuery = "INSERT INTO user (FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?)";
+    	int userId = 0;
+    	String sqlQuery = "INSERT INTO user (FirstName, LastName, Email, Password, UserType) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
-             PreparedStatement statement = dbConnection.prepareStatement(sqlQuery)) 
+        		PreparedStatement insertStatement = dbConnection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS))
         {
-            statement.setString(1, user.getUserFirstName());
-            statement.setString(2, user.getUserLastName());
-            statement.setString(3, user.getEmailAddress());
-            statement.setString(4, ((User) user).getPassword());
-
-            int rowsAffected = statement.executeUpdate();
+            insertStatement.setString(1, user.getUserFirstName());
+            insertStatement.setString(2, user.getUserLastName());
+            insertStatement.setString(3, user.getEmailAddress());
+            insertStatement.setString(4, ((User) user).getPassword());
+            insertStatement.setString(5, user.getUserType().name());
+            
+            int rowsAffected = insertStatement.executeUpdate();
+            
+            if (rowsAffected > 0) 
+            {
+                try (ResultSet getUserIDKey = insertStatement.getGeneratedKeys()) 
+                {
+                    if (getUserIDKey.next()) 
+                    {
+                        userId = getUserIDKey.getInt(1);  
+                    }
+                }
+            }
             LMSLogger.getInstance().info("Added " + rowsAffected + " user(s) to the database from ManageUserDAO class.");
         }
         catch (SQLException e) 
@@ -42,7 +63,9 @@ public class ManageUserDAO implements ManageUserDAOInterface {
             LMSLogger.getInstance().error("Error occurred while adding user to the database from ManageUserDAO class: " + e.getMessage());
             e.printStackTrace();
         }
+        return userId;
     }
+    
     @Override
     public void updateUser(AbstractUser updatedUser) 
     {
@@ -53,7 +76,7 @@ public class ManageUserDAO implements ManageUserDAOInterface {
              PreparedStatement selectStatement = dbConnection.prepareStatement(sqlSelect);
              PreparedStatement updateStatement = dbConnection.prepareStatement(sqlUpdate)) 
         {
-            // Setting parameters for the SELECT statement, releasing the local email address for UPDATE,
+            // Setting parameters for the SELECT statement, releasing the local email address for UPDATE, this resolved error in not being able to update email addres.
             selectStatement.setString(1, updatedUser.getEmailAddress());
             selectStatement.setInt(2, updatedUser.getUserId());  
 
@@ -85,16 +108,97 @@ public class ManageUserDAO implements ManageUserDAOInterface {
             e.printStackTrace();
         }
     }
+    
 
     @Override
-    public void removeUser(int userID) {
-        
-    	String sql = "DELETE FROM users WHERE userID = ?";
-        
-        try (PreparedStatement statement = connection.prepareStatement(sql)) 
+    public void addConsumerDetails(Consumer consumer) 
+    {
+        String sqlInsert = "INSERT INTO consumer (PhoneNumber, StreetAddress, City, Province, PostalCode, AccountBalance, UserID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+             PreparedStatement insertStatement = dbConnection.prepareStatement(sqlInsert)) 
         {
-            statement.setInt(1, userID);
-            statement.executeUpdate();
+        	insertStatement.setString(1, consumer.getPhoneNumber());
+        	insertStatement.setString(2, consumer.getStreetAddress());
+        	insertStatement.setString(3, consumer.getCity());
+        	insertStatement.setString(4, consumer.getProvince());
+        	insertStatement.setString(5, consumer.getPostalCode());
+        	insertStatement.setDouble(6, consumer.getAccountBalance());
+        	insertStatement.setInt(7, consumer.getUserId());
+        	
+        	insertStatement.executeUpdate();
+            LOGGER.info("Consumer details added for UserID: " + consumer.getUserId());
+        } 
+        catch (SQLException e) 
+        {
+            LOGGER.error("Failed to add consumer details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void addRetailerDetails(Retailer retailer) 
+    {
+        String sqlInsert = "INSERT INTO retailer (StoreName, StreetAddress, City, Province, PostalCode, UserID) VALUES (?, ?, ?, ?, ?, ?)";
+        
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+             PreparedStatement insertStatement = dbConnection.prepareStatement(sqlInsert)) 
+        {
+            insertStatement.setString(1, retailer.getStoreName());
+            insertStatement.setString(2, retailer.getStreetAddress());
+            insertStatement.setString(3, retailer.getCity());
+            insertStatement.setString(4, retailer.getProvince());
+            insertStatement.setString(5, retailer.getPostalCode());
+            insertStatement.setInt(6, retailer.getUserId());
+            
+            insertStatement.executeUpdate();
+            LOGGER.info("Retailer details added for UserID: " + retailer.getUserId());
+        }
+        catch (SQLException e) 
+        {
+            LOGGER.error("Failed to add retailer details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void addCharitableOrganizationDetails(CharitableOrganization organization)     
+    {    
+    	String sqlInsert = "INSERT INTO charitableOrganization (OrganizationName, StreetAddress, City, Province, PostalCode, UserID) VALUES (?, ?, ?, ?, ?, ?)";
+        
+    	try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+             PreparedStatement insertStatement = dbConnection.prepareStatement(sqlInsert)) 
+        {
+            insertStatement.setString(1, organization.getOrganizationName());
+            insertStatement.setString(2, organization.getStreetAddress());
+            insertStatement.setString(3, organization.getCity());
+            insertStatement.setString(4, organization.getProvince());
+            insertStatement.setString(5, organization.getPostalCode());
+            insertStatement.setInt(6, organization.getUserId());
+            
+            insertStatement.executeUpdate();
+            LOGGER.info("Charitable organization details added for UserID: " + organization.getUserId());
+        }
+        catch (SQLException e) 
+        {
+            LOGGER.error("Failed to add charitable organization details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeUser(int userID) 
+    {
+        
+    	String sqlQuery = "DELETE FROM users WHERE userID = ?";
+        
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+        	 PreparedStatement selectStatement = dbConnection.prepareStatement(sqlQuery)) 
+        {
+            selectStatement.setInt(1, userID);
+            selectStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -104,38 +208,111 @@ public class ManageUserDAO implements ManageUserDAOInterface {
     @Override
     public AbstractUser returnUser(int userID) 
     {
-        String sql = "SELECT * FROM users WHERE userID = ?";
+    	String sqlQuery = "SELECT * FROM users WHERE userID = ?";
         
-        try (PreparedStatement statement = connection.prepareStatement(sql)) 
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+        	 PreparedStatement selectStatement = dbConnection.prepareStatement(sqlQuery)) 
         {
-            statement.setInt(1, userID);
-            try (ResultSet resultSet = statement.executeQuery()) 
+            selectStatement.setInt(1, userID);
+            ResultSet resultSet = selectStatement.executeQuery();
+            if (resultSet.next()) 
             {
-                if (resultSet.next()) 
-                	return (User) extractUserFromResultSet(resultSet);                
+                return userDataExtractorService.extractUserFromResultSet(resultSet);
             }
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) 
+        {
+            LOGGER.error("SQL Error occurred: " + e.getMessage());
             e.printStackTrace();
-
         }
         return null;
     }
+    
+    @Override
+    public Retailer getRetailerSpecificData(int userID) 
+    {
+      	String sqlQuery = "SELECT * FROM retailer WHERE UserID = ?";
+        
+    	try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+    		 PreparedStatement selectStatement = dbConnection.prepareStatement(sqlQuery)) 
+    	{
+            selectStatement.setInt(1, userID);
+            ResultSet resultSet = selectStatement.executeQuery();
+            if (resultSet.next()) 
+            {
+                return userDataExtractorService.extractRetailerDataFromResultSet(resultSet);
+            }
+        } 
+    	catch (SQLException e) 
+    	{
+            LOGGER.error("SQL Error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Consumer getConsumerSpecificData(int userID)
+    {
+        String sqlQuery = "SELECT * FROM consumer WHERE UserID = ?";
+    
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+        	 PreparedStatement selectStatement = dbConnection.prepareStatement(sqlQuery)) 
+        {
+            selectStatement.setInt(1, userID);
+            ResultSet resultSet = selectStatement.executeQuery();
+            if (resultSet.next()) 
+            {
+                return userDataExtractorService.extractConsumerDataFromResultSet(resultSet);
+            }
+        } 
+        catch (SQLException e) 
+        {
+            LOGGER.error("SQL Error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public CharitableOrganization getCharitableOrganizationSpecificData(int userID) 
+    {
+        String sqlQuery = "SELECT * FROM charitableOrganization WHERE UserID = ?";
+    
+        try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
+        	 PreparedStatement selectStatement = connection.prepareStatement(sqlQuery)) 
+        {
+            selectStatement.setInt(1, userID);
+            ResultSet resultSet = selectStatement.executeQuery();
+            if (resultSet.next()) 
+            {
+                return userDataExtractorService.extractCharitableOrganizationDataFromResultSet(resultSet);
+            }
+        } 
+        catch (SQLException e) 
+        {
+            LOGGER.error("SQL Error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     
     @Override
     public AbstractUser returnUserByEmail(String email) {
         String sqlQuery = "SELECT * FROM user WHERE Email = ?";
 
         try (Connection dbConnection = DataSource.getInstance().getConnectionToDatabase();
-             PreparedStatement statement = dbConnection.prepareStatement(sqlQuery)) 
+             PreparedStatement selectStatement = dbConnection.prepareStatement(sqlQuery)) 
         {
             
-            statement.setString(1, email);
+            selectStatement.setString(1, email);
             
-            try (ResultSet resultSet = statement.executeQuery()) 
+            try (ResultSet resultSet = selectStatement.executeQuery()) 
             {
                 if (resultSet.next()) 
                 {
-                    return (User) extractUserFromResultSet(resultSet);
+                    return userDataExtractorService.extractUserFromResultSet(resultSet);
                 }
             }
         } 
@@ -147,20 +324,17 @@ public class ManageUserDAO implements ManageUserDAOInterface {
         return null;
     }
 
-
-
-
     @Override
     public List<AbstractUser> returnAllUsers() 
     {
         List<AbstractUser> users = new ArrayList<>();
-        String sql = "SELECT * FROM users";
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) 
+        String sqlQuery = "SELECT * FROM users";
+        try (Statement selectStatement = connection.createStatement();
+             ResultSet resultSet = selectStatement.executeQuery(sqlQuery)) 
         {
             while (resultSet.next()) 
             {
-                User user = (User) extractUserFromResultSet(resultSet);
+                User user = (User) userDataExtractorService.extractUserFromResultSet(resultSet);
                 users.add(user);
             }
         } 
@@ -171,24 +345,5 @@ public class ManageUserDAO implements ManageUserDAOInterface {
         return users;
     }
     
-    /**
-     * Helper method to extract user data from the ResultSet and create a User object.
-     *
-     * @param resultSet The ResultSet from which to extract user data.
-     * @return A User object populated with data from the ResultSet.
-     * @throws SQLException if accessing the ResultSet data fails.
-     */
-    private AbstractUser extractUserFromResultSet(ResultSet resultSet) throws SQLException 
-    {
-    	User user = new User();
-        user.setUserId(resultSet.getInt("UserID"));
-        user.setUserFirstName(resultSet.getString("FirstName"));
-        user.setUserLastName(resultSet.getString("LastName"));
-        user.setEmailAddress(resultSet.getString("Email"));
-        user.setPassword(resultSet.getString("Password"));
-        user.setUserType(UserType.valueOf(resultSet.getString("UserType").toUpperCase()));
-        
-        return user;
-    }
-    
+
 }

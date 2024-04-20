@@ -19,7 +19,7 @@ public class FoodItem extends Item
     }
 
     @Override
-    public String getRetailerID() 
+    public int getRetailerID() 
     {
         return super.retailerID;
     }
@@ -63,19 +63,13 @@ public class FoodItem extends Item
 	}
 
     @Override
-    public boolean isSurplus() 
-    {
-        return super.isSurplus;
-    }
-
-    @Override
     public void setItemID(int itemID) 
     {
         super.itemID = itemID;
     }
 
     @Override
-    public void setRetailerID(String retailerID) 
+    public void setRetailerID(int retailerID) 
     {
         super.retailerID = retailerID;
     }
@@ -117,10 +111,20 @@ public class FoodItem extends Item
 			
 	}
 
+    // Override toString method
     @Override
-    public void setSurplus(boolean isSurplus) 
+    public String toString() 
     {
-        super.isSurplus = isSurplus;
+        return "FoodItem{" +
+                "itemID=" + getItemID() +
+                ", retailerID=" + getRetailerID() +
+                ", itemName='" + getItemName() + '\'' +
+                ", quantity=" + getQuantity() +
+                ", expirationDate=" + getExpirationDate() +
+                ", price=" + getPrice() +
+                ", discountRate=" + getDiscountRate() +
+                ", discountAmount=" + getDiscountAmount() +
+                '}';
     }
 }
 

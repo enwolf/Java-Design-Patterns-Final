@@ -35,6 +35,7 @@
     <filter-name>AuthenticationFilter</filter-name>
     <url-pattern>/jsp/userDashboard.jsp</url-pattern>
     <url-pattern>/jsp/editProfile.jsp</url-pattern>
+    <url-pattern>/jsp/addItemToInventory.jsp</url-pattern>
   </filter-mapping>
   
 
@@ -58,6 +59,16 @@
     <servlet-name>EditProfileServlet</servlet-name>
     <servlet-class>org.cst8288.finalproject.servlets.EditProfileServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>InventoryServlet</servlet-name>
+    <servlet-class>org.cst8288.finalproject.servlets.InventoryServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>AddItemToInventoryServlet</servlet-name>
+    <servlet-class>org.cst8288.finalproject.servlets.AddItemToInventoryServlet</servlet-class>
+</servlet>
 
   <!-- Servlet Mapping -->
   <servlet-mapping>
@@ -79,6 +90,16 @@
     <servlet-name>EditProfileServlet</servlet-name>
     <url-pattern>/editProfile</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>InventoryServlet</servlet-name>
+    <url-pattern>/inventory</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>AddItemToInventoryServlet</servlet-name>
+    <url-pattern>/addInventoryItem</url-pattern>
+</servlet-mapping>
   
   
 

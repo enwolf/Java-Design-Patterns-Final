@@ -12,9 +12,9 @@ CREATE TABLE user (
     UserID INT AUTO_INCREMENT PRIMARY KEY,
     FirstName VARCHAR(255) NOT NULL,
     LastName VarChar(255) NOT NULL,
-    Email VARCHAR(255)  NOT NULL,
+    Email UNIQUE VARCHAR(255)  NOT NULL,
     Password VARCHAR(255) NOT NULL,
-    UserType ENUM('Retailer', 'Consumer', 'CharitableOrganization') NOT NULL
+    UserType ENUM('RETAILER', 'CONSUMER', 'CHARITABLE_ORGANIZATION') NOT NULL
 );
 
 -- Create Consumer Table

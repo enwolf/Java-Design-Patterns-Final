@@ -12,6 +12,10 @@ import javax.servlet.http.HttpSession;
 import org.cst8288.finalproject.dao.ManageUserDAO;
 import org.cst8288.finalproject.enums.UserType;
 import org.cst8288.finalproject.manager.RegisterUserManager;
+import org.cst8288.finalproject.service.UserDataExtractorService;
+import org.cst8288.finalproject.users.CharitableOrganization;
+import org.cst8288.finalproject.users.Consumer;
+import org.cst8288.finalproject.users.Retailer;
 import org.cst8288.finalproject.users.User;
 import org.cst8288.finalproject.validator.UserValidator;
 
@@ -23,8 +27,8 @@ import org.cst8288.finalproject.validator.UserValidator;
  * to a success page. The servlet logs registration errors to the console for debugging purposes.
  * 
  * @author Robin Phillis
- * @version 1.0
- * @since 2024-04-12
+ * @version 2.0
+ * @since 2024-04-19
  * @see HttpServlet
  * @see HttpServletRequest
  * @see HttpServletResponse
@@ -39,8 +43,7 @@ import org.cst8288.finalproject.validator.UserValidator;
 public class RegistrationServlet extends HttpServlet{
 
 	
-	//The IDE ask me for this and it made an error go away so I left it. 
-	 
+	//The IDE ask me for this and it made an error go away so I left it.	 
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -72,7 +75,8 @@ public class RegistrationServlet extends HttpServlet{
 	 */
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
+	{
 	    // Forwards to the registration form
 	    RequestDispatcher dispatcher = req.getRequestDispatcher("/jsp/register.jsp");
 	    dispatcher.forward(req, resp);
@@ -91,28 +95,24 @@ public class RegistrationServlet extends HttpServlet{
 	 * @throws IOException if an input or output error occurs while the servlet is handling the POST request.
 	 */
 	 @Override
-	    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	 {
+		 
 		 User user = new User();
-		 ManageUserDAO manageUserDAO = new ManageUserDAO();
+		 int userID;
+		 ManageUserDAO manageUserDAO = new ManageUserDAO(new UserDataExtractorService());
 		 UserValidator userValidator = new UserValidator();
 		 RegisterUserManager registerUserManager = new RegisterUserManager(manageUserDAO, userValidator);
 		 
-		 String contactMethod;
-		 String contactInfo;
-			
-		 user.setUserFirstName(request.getParameter("firstName"));
 		 user.setUserFirstName(request.getParameter("firstName"));
 		 user.setUserLastName(request.getParameter("lastName"));
 		 user.setEmailAddress(request.getParameter("email"));
 		 user.setPassword(request.getParameter("password"));
 		 user.setUserType(UserType.valueOf(request.getParameter("userType").toUpperCase()));
-	     
-		 contactMethod = request.getParameter("contactMethod");
-	     contactInfo = request.getParameter("contactInfo");
-	     
-	     registerUserManager.registerUser(user);	     
+	     		 	     	     
+		 userID = registerUserManager.registerUser(user);	     
 	     System.out.println(user.toString());
+	     System.out.println("userID= " + userID);
 
 	     // Store user details in session for use on the success page
 	     HttpSession session = request.getSession();
@@ -120,7 +120,56 @@ public class RegistrationServlet extends HttpServlet{
 	     session.setAttribute("lastName", user.getUserLastName());
 	     session.setAttribute("email", user.getEmailAddress());
 	     session.setAttribute("userType", user.getUserType().toString());
-	     session.setAttribute("contactMethod", contactMethod); 
+	     	     
+
+         switch (user.getUserType()) 
+         {
+             case CONSUMER:
+                 
+            	 Consumer consumer = new Consumer();
+                 
+            	 consumer.setUserId(userID); // Set the FK reference
+                 consumer.setPhoneNumber(request.getParameter("phoneNumber"));
+                 consumer.setStreetAddress(request.getParameter("consumerStreetAddress"));
+                 consumer.setCity(request.getParameter("consumerCity"));
+                 consumer.setProvince(request.getParameter("consumerProvince"));
+                 consumer.setPostalCode(request.getParameter("consumerPostalCode"));
+                 consumer.setAccountBalance(Double.parseDouble(request.getParameter("accountBalance")));  //Sets default value from hidden input.
+                 
+                 registerUserManager.registerConsumer(consumer);
+                 session.setAttribute("consumer", consumer);
+                 break;
+                 
+             case RETAILER:
+                 
+            	 Retailer retailer = new Retailer();
+                 
+                 retailer.setUserId(userID);
+                 retailer.setStoreName(request.getParameter("storeName"));
+                 retailer.setStreetAddress(request.getParameter("retailerStreetAddress"));
+                 retailer.setCity(request.getParameter("retailerCity"));
+                 retailer.setProvince(request.getParameter("retailerProvince"));
+                 retailer.setPostalCode(request.getParameter("retailerPostalCode"));
+                 
+                 registerUserManager.registerRetailer(retailer);
+                 session.setAttribute("retailer", retailer);
+                 break;
+                 
+             case CHARITABLE_ORGANIZATION:
+            	 
+                 CharitableOrganization organization = new CharitableOrganization();
+                 
+                 organization.setUserId(userID);
+                 organization.setOrganizationName(request.getParameter("organizationName"));
+                 organization.setStreetAddress(request.getParameter("charityStreetAddress"));
+                 organization.setCity(request.getParameter("charityCity"));
+                 organization.setProvince(request.getParameter("charityProvince"));
+                 organization.setPostalCode(request.getParameter("charityPostalCode"));
+                 
+                 registerUserManager.registerCharitableOrg(organization);
+                 session.setAttribute("organization", organization);
+                 break;
+         }
 	     
 	     response.sendRedirect(request.getContextPath() + "/jsp/registrationSuccess.jsp");
 	     

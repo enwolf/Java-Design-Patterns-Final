@@ -1,8 +1,6 @@
 package org.cst8288.finalproject.users;
 
-import org.cst8288.finalproject.enums.UserType;
-
-public class Retailer extends AbstractUser {
+public class Retailer extends User {
     
 	private int retailerID;
     private String storeName;
@@ -12,37 +10,6 @@ public class Retailer extends AbstractUser {
     private String postalCode;
 
     //Getters
-    
-    @Override
-    public int getUserId() 
-    {
-        return super.userID;
-    }
-
-    @Override
-    public String getUserFirstName() 
-    {
-        return super.userFirstName;
-    }
-
-    @Override
-    public String getUserLastName() 
-    {
-        return super.userLastName;
-    }
-
-    @Override
-    public String getEmailAddress() 
-    {
-        return super.emailAddress;
-    }
-
-    @Override
-    public UserType getUserType() 
-    {
-        return super.userType;
-    }
-
     public int getRetailerID() 
     {
         return retailerID;
@@ -74,42 +41,6 @@ public class Retailer extends AbstractUser {
     }
 
     //Setters
-    
-    @Override
-    public void setUserId(int userId) 
-    {
-        super.userID = userId;
-    }
-
-    @Override
-    public void setUserFirstName(String userFirstName) 
-    {
-        super.userFirstName = userFirstName;
-    }
-
-    @Override
-    public void setUserLastName(String userLastName) 
-    {
-        super.userLastName = userLastName;
-    }
-
-    @Override
-    public void setEmailAddress(String emailAddress) 
-    {
-        super.emailAddress = emailAddress;
-    }
-
-    @Override
-    public void setUserType(UserType userType) 
-    {
-        super.userType = userType;
-    }
-
-    public void setRetailerID(int retailerID) 
-    {
-        this.retailerID = retailerID;
-    }
-
     public void setStoreName(String storeName) 
     {
         this.storeName = storeName;

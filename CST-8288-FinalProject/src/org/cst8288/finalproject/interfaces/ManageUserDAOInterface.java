@@ -3,21 +3,34 @@ package org.cst8288.finalproject.interfaces;
 import java.util.List;
 
 import org.cst8288.finalproject.users.AbstractUser;
+import org.cst8288.finalproject.users.CharitableOrganization;
+import org.cst8288.finalproject.users.Consumer;
+import org.cst8288.finalproject.users.Retailer;
 
 public interface ManageUserDAOInterface {
     
-	void addUser(AbstractUser user);
+	int addUser(AbstractUser user);
     
     void removeUser(int userID);
+          
+    void updateUser(AbstractUser updatedUser);
     
-    AbstractUser returnUserByEmail(String email);
+	void addConsumerDetails(Consumer consumer);
+
+	void addRetailerDetails(Retailer retailer);
+
+	void addCharitableOrganizationDetails(CharitableOrganization organization);
+	
+	AbstractUser returnUserByEmail(String email);
     
     AbstractUser returnUser(int userID);
     
-    void updateUser(AbstractUser updatedUser);
-    
-    List<AbstractUser> returnAllUsers();
-
+	List<AbstractUser> returnAllUsers();
 	
+	Retailer getRetailerSpecificData(int userID);
+	
+	Consumer getConsumerSpecificData(int userID);
+	
+	CharitableOrganization getCharitableOrganizationSpecificData(int userID);
     
 }

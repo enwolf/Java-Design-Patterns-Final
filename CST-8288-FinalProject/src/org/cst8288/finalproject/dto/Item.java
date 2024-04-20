@@ -6,7 +6,7 @@ import java.sql.Date;
 public abstract class Item {
 	
     protected int itemID;
-    protected String retailerID;
+    protected int retailerID;
     protected String itemName;
     protected int quantity;
     protected Date expirationDate;
@@ -28,7 +28,7 @@ public abstract class Item {
 	/**
 	 * @return the retailerID
 	 */
-	public abstract String getRetailerID();
+	public abstract int getRetailerID();
 
 	/**
 	 * @return the itemName
@@ -61,19 +61,15 @@ public abstract class Item {
 	public abstract BigDecimal getDiscountAmount();
 
 	/**
-	 * @return the isSurplus
-	 */
-	public abstract boolean isSurplus();
-
-	/**
 	 * @param itemID the itemID to set
 	 */
 	public abstract void setItemID(int itemID);
 
 	/**
 	 * @param retailerID the retailerID to set
+	 * @return 
 	 */
-	public abstract void setRetailerID(String retailerID);
+	public abstract void setRetailerID(int retailerID);
 
 	/**
 	 * @param itemName the itemName to set
@@ -105,9 +101,5 @@ public abstract class Item {
 	 */
 	public abstract void setDiscountAmount(BigDecimal discountAmount);
 
-	/**
-	 * @param isSurplus the isSurplus to set
-	 */
-	public abstract void setSurplus(boolean isSurplus);
 	
 }

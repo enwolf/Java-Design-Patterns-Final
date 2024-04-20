@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.cst8288.finalproject.dao.ManageUserDAO;
+import org.cst8288.finalproject.dao.UserAuthenticationDAO;
 import org.cst8288.finalproject.logger.LMSLogger;
 import org.cst8288.finalproject.manager.UserManager;
+import org.cst8288.finalproject.service.UserDataExtractorService;
 import org.cst8288.finalproject.users.AbstractUser;
 import org.cst8288.finalproject.users.User;
 import org.cst8288.finalproject.validator.UserValidator;
@@ -35,7 +37,7 @@ public class EditProfileServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ManageUserDAO manageUserDAO = new ManageUserDAO();
+        ManageUserDAO manageUserDAO = new ManageUserDAO(new UserDataExtractorService());
         UserValidator userValidator = new UserValidator();
         HttpSession session = request.getSession(false);
 
@@ -81,7 +83,7 @@ public class EditProfileServlet extends HttpServlet {
             return;
         }
 
-        UserManager userManager = new UserManager(manageUserDAO, userValidator);
+        UserManager userManager = new UserManager(manageUserDAO, userValidator, new UserAuthenticationDAO());
         boolean updateStatus = userManager.updateUser(user);
 
         if (updateStatus) {

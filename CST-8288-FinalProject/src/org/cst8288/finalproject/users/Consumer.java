@@ -1,8 +1,6 @@
 package org.cst8288.finalproject.users;
 
-import org.cst8288.finalproject.enums.UserType;
-
-public class Consumer extends AbstractUser {
+public class Consumer extends User {
 
     private int consumerID;
     private String phoneNumber;
@@ -10,37 +8,8 @@ public class Consumer extends AbstractUser {
     private String city;
     private String province;
     private String postalCode;
-        
+    private double accountBalance;        
     
-    @Override
-    public int getUserId() 
-    {
-        return super.userID;  
-    }
-
-    @Override
-    public UserType getUserType() 
-    {
-        return super.userType;  
-    }
-
-    @Override
-    public String getUserFirstName() 
-    {
-        return super.userFirstName; 
-    }
-
-    @Override
-    public String getUserLastName() 
-    {
-        return super.userLastName;  
-    }
-
-    @Override
-    public String getEmailAddress() 
-    {
-        return super.emailAddress;  
-    }
     
     public int getConsumerID() 
     {
@@ -71,41 +40,11 @@ public class Consumer extends AbstractUser {
     {
         return postalCode;
     }
-
-    @Override
-    public void setUserId(int userId) 
-    {
-        super.userID = userId;  
-    }
-
-    @Override
-    public void setUserType(UserType userType) 
-    {
-        super.userType = userType; 
-    }
-
-    @Override
-    public void setUserFirstName(String userFirstName) 
-    {
-        super.userFirstName = userFirstName;  
-    }
-
-    @Override
-    public void setUserLastName(String userLastName) 
-    {
-        super.userLastName = userLastName; 
-    }
-
-    @Override
-    public void setEmailAddress(String emailAddress) 
-    {
-        super.emailAddress = emailAddress; 
-    }
-
-    public void setConsumerID(int consumerID) 
-    {
-        this.consumerID = consumerID;
-    }
+ 
+	public double getAccountBalance() 
+	{
+		return accountBalance;
+	}
 
     public void setPhoneNumber(String phoneNumber) 
     {
@@ -131,4 +70,8 @@ public class Consumer extends AbstractUser {
     {
         this.postalCode = postalCode;
     }
+
+	public void setAccountBalance(double accountBalance) {
+		this.accountBalance = accountBalance;
+	}
 }
