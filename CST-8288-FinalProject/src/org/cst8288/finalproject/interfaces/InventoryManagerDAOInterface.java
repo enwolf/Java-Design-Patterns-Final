@@ -19,12 +19,61 @@ import org.cst8288.finalproject.dto.Item;
  */
 public interface InventoryManagerDAOInterface {
 	
-	void addInventoryItem(Item inventoryItem) throws SQLException;
-	void updateInventoryItem(Item inventoryItem) throws SQLException;
-	void removeInventoryitem(int itemID) throws SQLException;
-	Item getSingleInventoryItemByID(int itemID) throws SQLException;
-	public boolean isItemSurplus(int itemID) throws SQLException;
-	List<Item> getALLInventoryItems() throws SQLException;
-	List<Item> getALLSurplusInventoryItems() throws SQLException;
-
+	/**
+     * Adds a new inventory item to the database.
+     * 
+     * @param inventoryItem The inventory item to be added.
+     * @throws SQLException If an SQL exception occurs while adding the item.
+     */
+    void addInventoryItem(Item inventoryItem) throws SQLException;
+    
+    /**
+     * Updates an existing inventory item in the database.
+     * 
+     * @param inventoryItem The inventory item to be updated.
+     * @throws SQLException If an SQL exception occurs while updating the item.
+     */
+    void updateInventoryItem(Item inventoryItem) throws SQLException;
+    
+    /**
+     * Removes an inventory item from the database based on its ID.
+     * 
+     * @param itemID The ID of the inventory item to be removed.
+     * @throws SQLException If an SQL exception occurs while removing the item.
+     */
+    void removeInventoryitem(int itemID) throws SQLException;
+    
+    /**
+     * Retrieves a single inventory item from the database based on its ID.
+     * 
+     * @param itemID The ID of the inventory item to retrieve.
+     * @return The retrieved inventory item.
+     * @throws SQLException If an SQL exception occurs while retrieving the item.
+     */
+    Item getSingleInventoryItemByID(int itemID) throws SQLException;
+    
+    /**
+     * Checks if an inventory item with the given ID is surplus.
+     * 
+     * @param itemID The ID of the inventory item to check.
+     * @return true if the item is surplus, false otherwise.
+     * @throws SQLException If an SQL exception occurs while checking the surplus status.
+     */
+    boolean isItemSurplus(int itemID) throws SQLException;
+    
+    /**
+     * Retrieves all inventory items from the database.
+     * 
+     * @return A list containing all inventory items.
+     * @throws SQLException If an SQL exception occurs while retrieving the items.
+     */
+    List<Item> getALLInventoryItems() throws SQLException;
+    
+    /**
+     * Retrieves all surplus inventory items from the database.
+     * 
+     * @return A list containing all surplus inventory items.
+     * @throws SQLException If an SQL exception occurs while retrieving the items.
+     */
+    List<Item> getALLSurplusInventoryItems() throws SQLException;
 }

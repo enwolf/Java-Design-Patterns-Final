@@ -22,11 +22,13 @@ import org.cst8288.finalproject.logger.LMSLogger;
  *
  * @author Robin Phillis
  * @version 1.0
- * @since 2024-03-22
+ * @since 2024-04-20
  * @see org.cst8288.finalproject.interfaces.InventoryManagerDAOInterface
  */
 public class InventoryManagerDAO implements InventoryManagerDAOInterface {
+	
 	private static final LMSLogger logger = LMSLogger.getInstance();
+	
 	/**
 	 * Adds a new inventory item to the database. This method inserts a record into the 'inventory'
 	 * table using the attributes of the provided inventoryItem object. It handles both standard and
