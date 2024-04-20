@@ -47,7 +47,7 @@ public class RegisterUserManager {
 
     public void registerCharitableOrg(CharitableOrganization organization)
     {
-        manageUserDAO.addCharitableOrgDetails(organization); 
+        manageUserDAO.addCharitableOrganizationDetails(organization); 
         System.out.println("Charitable Organization registered successfully.");        
     }
 }
