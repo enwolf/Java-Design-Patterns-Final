@@ -1,18 +1,34 @@
 package org.cst8288.finalproject.manager;
 
 import org.cst8288.finalproject.dao.ManageUserDAO;
+import org.cst8288.finalproject.dao.UserAuthenticationDAO;
+import org.cst8288.finalproject.logger.LMSLogger;
 import org.cst8288.finalproject.users.AbstractUser;
-import org.cst8288.finalproject.users.User;
 import org.cst8288.finalproject.validator.UserValidator;
 
 public class UserManager {
     private ManageUserDAO manageUserDAO;
     private UserValidator userValidator;
-
-    public UserManager(ManageUserDAO manageUserDAO, UserValidator userValidator) 
+    private UserPasswordManager userPasswordManager; 
+    private LMSLogger logger = LMSLogger.getInstance(); 
+    
+    public UserManager(ManageUserDAO manageUserDAO, UserValidator userValidator, UserAuthenticationDAO userAuthDAO) 
     {
         this.manageUserDAO = manageUserDAO;
         this.userValidator = userValidator;
+        this.userPasswordManager = new UserPasswordManager(userAuthDAO); 
+    }
+
+    public boolean authenticateUserPassword(String email, String password) 
+    {
+    	AbstractUser user = getUserByEmail(email);
+        if (user != null && userPasswordManager.verifyPassword(email, password)) 
+        {
+            logger.debug("Authentication successful for user: " + email);
+            return true;
+        }
+        logger.warn("Authentication failed for user: " + email);
+        return false;
     }
 
     public boolean validateAndAddUser(AbstractUser user) 
@@ -20,15 +36,22 @@ public class UserManager {
         if (userValidator.validateUser(user)) 
         {
             try 
-            {   manageUserDAO.addUser(user);
-                return true; // User successfully added
+            {
+                manageUserDAO.addUser(user);
+                logger.info("User added successfully: " + user.getEmailAddress());
+                return true;
             }
             catch (Exception e) 
             {
-                e.printStackTrace();
+                logger.error("Error adding user: " + user.getEmailAddress());
+                logger.logException(e);
             }
+        } 
+        else 
+        {
+            logger.warn("Validation failed for user: " + user.getEmailAddress());
         }
-        return false; // Validation failed or an exception occurred
+        return false;
     }
 
     public boolean updateUser(AbstractUser user) 
@@ -36,13 +59,15 @@ public class UserManager {
         try 
         {
             manageUserDAO.updateUser(user);
-            return true; // User successfully updated
+            logger.info("User updated successfully: " + user.getEmailAddress());
+            return true;
         }
         catch (Exception e) 
         {
-            e.printStackTrace();
+            logger.error("Error updating user: " + user.getEmailAddress());
+            logger.logException(e);
         }
-        return false; // An exception occurred
+        return false;
     }
 
     public boolean deleteUser(int userId) 
@@ -50,38 +75,59 @@ public class UserManager {
         try 
         {
             manageUserDAO.removeUser(userId);
-            return true; 
-        } 
+            logger.info("User deleted successfully: UserID = " + userId);
+            return true;
+        }
         catch (Exception e) 
         {
-            e.printStackTrace();
+            logger.error("Error deleting user: UserID = " + userId);
+            logger.logException(e);
         }
-        return false; 
+        return false;
     }
 
-    public User getUserById(int userId) 
+    public AbstractUser getUserById(int userId) 
     {
         try 
         {
-            return (User) manageUserDAO.returnUser(userId);
-        } 
+            return manageUserDAO.returnUser(userId);
+        }
         catch (Exception e) 
         {
-            e.printStackTrace();
+            logger.error("Error retrieving user by ID: " + userId);
+            logger.logException(e);
         }
-        return null; // An exception occurred, return null
+        return null;
     }
 
-    public User getUserByEmail(String email) 
+    public AbstractUser getUserByEmail(String email) 
     {
         try 
         {
-            return (User) manageUserDAO.returnUserByEmail(email);
+            return manageUserDAO.returnUserByEmail(email);
         }
         catch (Exception e) 
         {
-            e.printStackTrace();
+            logger.error("Error retrieving user by email: " + email);
+            logger.logException(e);
         }
-        return null; // An exception occurred, return null
+        return null;
     }
+    
+    public AbstractUser populateUserDetails(AbstractUser user) 
+    {        
+    	if (user == null) return null;
+        
+        switch (user.getUserType()) 
+        {
+		    case RETAILER:
+		        return manageUserDAO.getRetailerSpecificData(user.getUserId());
+		    case CONSUMER:
+		        return manageUserDAO.getConsumerSpecificData(user.getUserId());
+		    case CHARITABLE_ORGANIZATION:
+		        return manageUserDAO.getCharitableOrganizationSpecificData(user.getUserId());
+		    default:
+		        return manageUserDAO.returnUser(user.getUserId());
+		}        
+    }    
 }
