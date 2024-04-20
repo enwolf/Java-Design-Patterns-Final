@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.cst8288.finalproject.dao.ManageUserDAO;
 import org.cst8288.finalproject.enums.UserType;
 import org.cst8288.finalproject.manager.RegisterUserManager;
+import org.cst8288.finalproject.service.UserDataExtractorService;
 import org.cst8288.finalproject.users.CharitableOrganization;
 import org.cst8288.finalproject.users.Consumer;
 import org.cst8288.finalproject.users.Retailer;
@@ -74,7 +75,8 @@ public class RegistrationServlet extends HttpServlet{
 	 */
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
+	{
 	    // Forwards to the registration form
 	    RequestDispatcher dispatcher = req.getRequestDispatcher("/jsp/register.jsp");
 	    dispatcher.forward(req, resp);
@@ -98,20 +100,16 @@ public class RegistrationServlet extends HttpServlet{
 		 
 		 User user = new User();
 		 int userID;
-		 ManageUserDAO manageUserDAO = new ManageUserDAO();
+		 ManageUserDAO manageUserDAO = new ManageUserDAO(new UserDataExtractorService());
 		 UserValidator userValidator = new UserValidator();
 		 RegisterUserManager registerUserManager = new RegisterUserManager(manageUserDAO, userValidator);
 		 
-		 String contactMethod;
-		 			
 		 user.setUserFirstName(request.getParameter("firstName"));
 		 user.setUserLastName(request.getParameter("lastName"));
 		 user.setEmailAddress(request.getParameter("email"));
 		 user.setPassword(request.getParameter("password"));
 		 user.setUserType(UserType.valueOf(request.getParameter("userType").toUpperCase()));
-	     
-		 contactMethod = request.getParameter("contactMethod");
-	     	     
+	     		 	     	     
 		 userID = registerUserManager.registerUser(user);	     
 	     System.out.println(user.toString());
 	     System.out.println("userID= " + userID);
@@ -122,8 +120,7 @@ public class RegistrationServlet extends HttpServlet{
 	     session.setAttribute("lastName", user.getUserLastName());
 	     session.setAttribute("email", user.getEmailAddress());
 	     session.setAttribute("userType", user.getUserType().toString());
-	     session.setAttribute("contactMethod", contactMethod); 
-	     
+	     	     
 
          switch (user.getUserType()) 
          {
@@ -140,6 +137,7 @@ public class RegistrationServlet extends HttpServlet{
                  consumer.setAccountBalance(Double.parseDouble(request.getParameter("accountBalance")));  //Sets default value from hidden input.
                  
                  registerUserManager.registerConsumer(consumer);
+                 session.setAttribute("consumer", consumer);
                  break;
                  
              case RETAILER:
@@ -154,6 +152,7 @@ public class RegistrationServlet extends HttpServlet{
                  retailer.setPostalCode(request.getParameter("retailerPostalCode"));
                  
                  registerUserManager.registerRetailer(retailer);
+                 session.setAttribute("retailer", retailer);
                  break;
                  
              case CHARITABLE_ORGANIZATION:
@@ -168,6 +167,7 @@ public class RegistrationServlet extends HttpServlet{
                  organization.setPostalCode(request.getParameter("charityPostalCode"));
                  
                  registerUserManager.registerCharitableOrg(organization);
+                 session.setAttribute("organization", organization);
                  break;
          }
 	     
