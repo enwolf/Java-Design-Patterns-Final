@@ -158,9 +158,11 @@ public class FoodItemValidator {
         if (!validateSurplus(foodItem.getItemID())) 
             return false; // Invalid Surplus
 
+        /*
         if (!validateRetailer(foodItem.getRetailerID())) 
             return false; // Invalid Retailer Name
-
+         */
+        
         return true; // All validations passed
     }
 }
